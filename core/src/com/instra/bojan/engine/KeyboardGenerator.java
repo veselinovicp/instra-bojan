@@ -25,10 +25,10 @@ public abstract class KeyboardGenerator {
     public KeyboardGenerator(String instrument, float width, float height) {
         this.width = width;
         this.height = height;
-        circleHeightStart = Math.min(width, height)/6;
+        circleHeightStart = Math.min(width, height)/4.5f;
         circleWidthStart = circleHeightStart;
 
-        circleHeightEnd = Math.min(width, height)/20;
+        circleHeightEnd = Math.min(width, height)/24;
         circleWidthEnd = circleHeightEnd;
 
         bojanInstrument = BojanInstrument.getBojanInstrument(instrument);
@@ -68,32 +68,40 @@ public abstract class KeyboardGenerator {
             BojanPosition bojanPosition = new BojanPosition(leftX, leftY, rightX, rightY);
 
             Color color=null;
+            Color activeColor=null;
             if(i%7==0){
                 color = Color.valueOf("FF0000");
+                activeColor = Color.valueOf("ff6666");
             }
             if(i%7==1){
                 color = Color.valueOf("FF7F00");
+                activeColor = Color.valueOf("ffb870");
             }
             if(i%7==2){
                 color = Color.valueOf("FFFF00");
+                activeColor = Color.valueOf("ffff8a");
             }
             if(i%7==3){
                 color = Color.valueOf("00FF00");
+                activeColor = Color.valueOf("85ff85");
             }
             if(i%7==4){
                 color = Color.valueOf("0000FF");
+                activeColor = Color.valueOf("8080ff");
             }
             if(i%7==5){
                 color = Color.valueOf("4B0082");
+                activeColor = Color.valueOf("b042ff");
             }
             if(i%7==6){
                 color = Color.valueOf("9400D3");
+                activeColor = Color.valueOf("d980ff");
             }
 
 
             String sound = bojanInstrument.getSound(i);
 
-            BojanCircle bojanCircle = new BojanCircle(bojanPosition, color, sound);
+            BojanCircle bojanCircle = new BojanCircle(bojanPosition, color, activeColor, sound);
             bojanCircles.add(bojanCircle);
         }
         return bojanCircles;
