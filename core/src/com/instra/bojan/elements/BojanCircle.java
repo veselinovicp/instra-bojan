@@ -46,8 +46,15 @@ public class BojanCircle extends Actor {
         }else {
             batch.setColor(color);
         }
+
+        if(!batch.isDrawing()){
+            batch.begin();
+        }
         batch.draw(texture,bojanPosition.getLeftX(),bojanPosition.getLeftY(), width, height);
+//        batch.end();
     }
 
-
+    public BojanPosition getBojanPosition() {
+        return bojanPosition;
+    }
 }

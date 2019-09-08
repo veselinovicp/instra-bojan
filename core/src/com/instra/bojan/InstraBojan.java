@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.instra.bojan.elements.BojanCircle;
+import com.instra.bojan.elements.InstrumentGrid;
 import com.instra.bojan.engine.KeyboardGenerator;
 
 import java.util.List;
@@ -27,9 +28,16 @@ public class InstraBojan extends ApplicationAdapter {
 		int height = Gdx.graphics.getHeight();
 		KeyboardGenerator keyboardGenerator = KeyboardGenerator.getKeyboardGenerator(Constants.KEYBOARD_TYPE_EXPONENTIAL_SPIRAL, Constants.INSTRUMENT_VIOLIN, width, height);
 		List<BojanCircle> spiralCircles = keyboardGenerator.getSpiralCircles();
+
+		InstrumentGrid instrumentGrid = new InstrumentGrid(spiralCircles);
+
+		stage.addActor(instrumentGrid);
+
 		for(BojanCircle circle : spiralCircles){
 			stage.addActor(circle);
 		}
+
+//		stage.addActor(instrumentGrid);
 
 
 		Gdx.input.setInputProcessor(stage);

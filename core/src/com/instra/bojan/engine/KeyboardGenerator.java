@@ -25,7 +25,7 @@ public abstract class KeyboardGenerator {
     public KeyboardGenerator(String instrument, float width, float height) {
         this.width = width;
         this.height = height;
-        circleHeightStart = Math.min(width, height)/4.5f;
+        circleHeightStart = Math.min(width, height)/6f;
         circleWidthStart = circleHeightStart;
 
         circleHeightEnd = Math.min(width, height)/24;
@@ -55,20 +55,13 @@ public abstract class KeyboardGenerator {
         List<BojanCircle> bojanCircles = new ArrayList<BojanCircle>();
         for(int i=0; i<21;i++){
 
-            float angle = (float) (i*2*Math.PI)/7f;
-            float radius = getRadius(angle);
-            float cartesionX = getCartesionX(angle, radius);
-            float cartesionY = getCartesionY(angle, radius);
-            float circleWidth = (((21-i)*circleWidthStart)+(i*circleWidthEnd))/21;
-            float circleHeight = (((21-i)*circleHeightStart)+(i*circleHeightEnd))/21;
-            float leftX = cartesionX - (circleWidth /2);
-            float leftY = cartesionY - (circleHeight /2) ;
-            float rightX = cartesionX + (circleWidth /2);
-            float rightY = cartesionY + (circleHeight /2);
-            BojanPosition bojanPosition = new BojanPosition(leftX, leftY, rightX, rightY);
+
+            float seventhOfCircle=(float) ( 2*Math.PI)/7f;
+            float angle = (float) i*seventhOfCircle;
 
             Color color=null;
             Color activeColor=null;
+            float deltaAngle = 0;
             if(i%7==0){
                 color = Color.valueOf("FF0000");
                 activeColor = Color.valueOf("ff6666");
@@ -80,10 +73,12 @@ public abstract class KeyboardGenerator {
             if(i%7==2){
                 color = Color.valueOf("FFFF00");
                 activeColor = Color.valueOf("ffff8a");
+                deltaAngle =  seventhOfCircle/4;
             }
             if(i%7==3){
                 color = Color.valueOf("00FF00");
                 activeColor = Color.valueOf("85ff85");
+                deltaAngle = - seventhOfCircle/4;
             }
             if(i%7==4){
                 color = Color.valueOf("0000FF");
@@ -92,11 +87,27 @@ public abstract class KeyboardGenerator {
             if(i%7==5){
                 color = Color.valueOf("4B0082");
                 activeColor = Color.valueOf("b042ff");
+                deltaAngle =  seventhOfCircle/4;
             }
             if(i%7==6){
                 color = Color.valueOf("9400D3");
                 activeColor = Color.valueOf("d980ff");
+                deltaAngle =  -seventhOfCircle/4;
             }
+
+            angle = angle + deltaAngle;
+            float radius = getRadius(angle);
+            float cartesionX = getCartesionX(angle, radius);
+            float cartesionY = getCartesionY(angle, radius);
+            float circleWidth = (((21-i)*circleWidthStart)+(i*circleWidthEnd))/21;
+            float circleHeight = (((21-i)*circleHeightStart)+(i*circleHeightEnd))/21;
+            float leftX = cartesionX - (circleWidth /2);
+            float leftY = cartesionY - (circleHeight /2) ;
+            float rightX = cartesionX + (circleWidth /2);
+            float rightY = cartesionY + (circleHeight /2);
+            BojanPosition bojanPosition = new BojanPosition(leftX, leftY, rightX, rightY);
+
+
 
 
             String sound = bojanInstrument.getSound(i);
