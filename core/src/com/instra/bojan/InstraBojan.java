@@ -13,19 +13,41 @@ import java.util.List;
 
 public class InstraBojan extends ApplicationAdapter {
 	Stage stage;
+	ScreenViewport viewport;
+
+	int screenWidth;
+	int screenHeight;
+	List<BojanCircle> spiralCircles;
 
 
 	
 	@Override
 	public void create () {
-		stage = new Stage(new ScreenViewport());
+
 
 
 //		BojanCircle circle = new BojanCircle(new BojanPosition(200f,200f,500,500));
 
 
-		int width = Gdx.graphics.getWidth();
-		int height = Gdx.graphics.getHeight();
+		screenWidth = Gdx.graphics.getWidth();
+		screenHeight = Gdx.graphics.getHeight();
+		fillStage(screenWidth, screenHeight);
+
+
+
+
+
+	}
+
+	private void fillStage(int width, int height ) {
+
+
+
+		viewport = new ScreenViewport();
+		stage = new Stage(viewport);
+
+		System.out.println("width: "+width+", height: "+height);
+
 		KeyboardGenerator keyboardGenerator = KeyboardGenerator.getKeyboardGenerator(Constants.KEYBOARD_TYPE_EXPONENTIAL_SPIRAL, Constants.INSTRUMENT_VIOLIN, width, height);
 
 
@@ -33,16 +55,32 @@ public class InstraBojan extends ApplicationAdapter {
 
 		stage.addActor(instrumentGrid);
 
-		List<BojanCircle> spiralCircles = keyboardGenerator.getSpiralCircles();
+		spiralCircles = keyboardGenerator.getSpiralCircles();
 
 		for(BojanCircle circle : spiralCircles){
 			stage.addActor(circle);
+
+
 		}
 
-//		stage.addActor(instrumentGrid);
-
-
 		Gdx.input.setInputProcessor(stage);
+	}
+
+	private void disposeStage() {
+		if(spiralCircles!=null){
+			for(BojanCircle circle : spiralCircles){
+				circle.dispose();
+
+			}
+		}
+		if(stage!=null){
+//			stage.clear();
+			stage.clear();
+			stage.dispose();
+
+
+
+		}
 	}
 
 	@Override
@@ -50,5 +88,18 @@ public class InstraBojan extends ApplicationAdapter {
 
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		stage.draw();
+	}
+
+	@Override
+	public void resize(int width, int height) {
+		super.resize(width, height);
+//		viewport.update(width, height);
+//		stage.clear();
+		if(screenWidth!=width || screenHeight!=height) {
+			disposeStage();
+			fillStage(width, height);
+			screenWidth=width;
+			screenHeight=height;
+		}
 	}
 }

@@ -35,6 +35,7 @@ public class BojanCircle extends Actor {
         soundEffect = Gdx.audio.newSound(Gdx.files.internal(sound));
         touchListener = new TouchListener(soundEffect);
         addListener(touchListener);
+
     }
 
     @Override
@@ -54,7 +55,10 @@ public class BojanCircle extends Actor {
 //        batch.end();
     }
 
-    public BojanPosition getBojanPosition() {
-        return bojanPosition;
+    public void dispose(){
+        setBounds(0,0,0,0);
+        removeListener(touchListener);
+        remove();
     }
+
 }
