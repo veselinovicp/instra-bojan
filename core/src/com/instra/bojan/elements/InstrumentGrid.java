@@ -15,6 +15,8 @@ public class InstrumentGrid extends Actor {
 
     private ShapeRenderer shapeRenderer;
 
+    float initialSize=50;
+
 
     public InstrumentGrid(List<GridLine> gridLines) {
 
@@ -31,9 +33,12 @@ public class InstrumentGrid extends Actor {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
 
-
-       for(GridLine gridLine : gridLines){
-           shapeRenderer.rectLine(gridLine.getX1(),gridLine.getY1(),gridLine.getX2(),gridLine.getY2(),20);
+        int numOfLines = gridLines.size();
+        int i=0;
+        for(GridLine gridLine : gridLines){
+           float width = (((numOfLines-i)*initialSize)+(i*1))/numOfLines;
+           shapeRenderer.rectLine(gridLine.getX1(),gridLine.getY1(),gridLine.getX2(),gridLine.getY2(),width);
+           i++;
        }
 
         shapeRenderer.end();

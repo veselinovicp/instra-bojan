@@ -29,7 +29,7 @@ public class InstraBojan extends ApplicationAdapter {
 		KeyboardGenerator keyboardGenerator = KeyboardGenerator.getKeyboardGenerator(Constants.KEYBOARD_TYPE_EXPONENTIAL_SPIRAL, Constants.INSTRUMENT_VIOLIN, width, height);
 
 
-		InstrumentGrid instrumentGrid = new InstrumentGrid(keyboardGenerator.getGridLines(100));
+		InstrumentGrid instrumentGrid = new InstrumentGrid(keyboardGenerator.getGridLines(200));
 
 		stage.addActor(instrumentGrid);
 

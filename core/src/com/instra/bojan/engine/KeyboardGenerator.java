@@ -85,7 +85,7 @@ public abstract class KeyboardGenerator {
             if(i%7==4){
                 color = Color.valueOf("0000FF");
                 activeColor = Color.valueOf("8080ff");
-                deltaAngle =  seventhOfCircle/8;
+//                deltaAngle =  -seventhOfCircle/8;
             }
             if(i%7==5){
                 color = Color.valueOf("4B0082");
