@@ -27,11 +27,13 @@ public class InstraBojan extends ApplicationAdapter {
 		int width = Gdx.graphics.getWidth();
 		int height = Gdx.graphics.getHeight();
 		KeyboardGenerator keyboardGenerator = KeyboardGenerator.getKeyboardGenerator(Constants.KEYBOARD_TYPE_EXPONENTIAL_SPIRAL, Constants.INSTRUMENT_VIOLIN, width, height);
-		List<BojanCircle> spiralCircles = keyboardGenerator.getSpiralCircles();
 
-		InstrumentGrid instrumentGrid = new InstrumentGrid(spiralCircles);
+
+		InstrumentGrid instrumentGrid = new InstrumentGrid(keyboardGenerator.getGridLines(100));
 
 		stage.addActor(instrumentGrid);
+
+		List<BojanCircle> spiralCircles = keyboardGenerator.getSpiralCircles();
 
 		for(BojanCircle circle : spiralCircles){
 			stage.addActor(circle);

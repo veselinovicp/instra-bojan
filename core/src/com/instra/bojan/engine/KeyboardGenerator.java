@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.instra.bojan.Constants;
 import com.instra.bojan.elements.BojanCircle;
 import com.instra.bojan.elements.BojanPosition;
+import com.instra.bojan.elements.GridLine;
 import com.instra.bojan.engine.instrument.BojanInstrument;
 
 import java.util.ArrayList;
@@ -69,6 +70,7 @@ public abstract class KeyboardGenerator {
             if(i%7==1){
                 color = Color.valueOf("FF7F00");
                 activeColor = Color.valueOf("ffb870");
+                deltaAngle =  seventhOfCircle/8;
             }
             if(i%7==2){
                 color = Color.valueOf("FFFF00");
@@ -83,6 +85,7 @@ public abstract class KeyboardGenerator {
             if(i%7==4){
                 color = Color.valueOf("0000FF");
                 activeColor = Color.valueOf("8080ff");
+                deltaAngle =  seventhOfCircle/8;
             }
             if(i%7==5){
                 color = Color.valueOf("4B0082");
@@ -116,6 +119,30 @@ public abstract class KeyboardGenerator {
             bojanCircles.add(bojanCircle);
         }
         return bojanCircles;
+    }
+
+    public List<GridLine> getGridLines(int number){
+        List<GridLine> result = new ArrayList<GridLine>();
+
+        float angleStep = (float)(6*Math.PI/(float)number);
+        for(int i=0; i<number-1;i++){
+            float previousAngle = angleStep*i;
+            float previousRadius = getRadius(previousAngle);
+            float previousCartesionX = getCartesionX(previousAngle, previousRadius);
+            float previousCartesionY = getCartesionY(previousAngle, previousRadius);
+
+            float nextAngle = angleStep*(i+1);
+            float nextRadius = getRadius(nextAngle);
+            float nextCartesionX = getCartesionX(nextAngle, nextRadius);
+            float nextCartesionY = getCartesionY(nextAngle, nextRadius);
+
+            GridLine gridLine = new GridLine(previousCartesionX, previousCartesionY, nextCartesionX, nextCartesionY);
+            result.add(gridLine);
+
+
+
+        }
+        return result;
     }
 
     protected float getCartesionX(float angle, float radius){

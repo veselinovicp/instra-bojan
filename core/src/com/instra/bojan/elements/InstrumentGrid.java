@@ -9,15 +9,17 @@ import java.util.List;
 
 public class InstrumentGrid extends Actor {
 
-    private List<BojanCircle> bojanCircles;
+
+
+    private List<GridLine> gridLines;
 
     private ShapeRenderer shapeRenderer;
 
-    int numOfCircles;
 
-    public InstrumentGrid(List<BojanCircle> bojanCircles) {
-        this.bojanCircles = bojanCircles;
-        numOfCircles = bojanCircles.size();
+    public InstrumentGrid(List<GridLine> gridLines) {
+
+        this.gridLines = gridLines;
+
 
         shapeRenderer = new ShapeRenderer();
     }
@@ -25,19 +27,14 @@ public class InstrumentGrid extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
 
-//        shapeRenderer.setColor(Color.WHITE);
+        shapeRenderer.setColor(Color.WHITE);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
 
-        for(int i=0; i<numOfCircles-1;i++){
-            BojanCircle previous = bojanCircles.get(i);
-            BojanCircle next = bojanCircles.get(i + 1);
-            float x1 = (previous.getBojanPosition().getLeftX()+previous.getBojanPosition().getRightX())/2f;
-            float y1 = (previous.getBojanPosition().getLeftY()+previous.getBojanPosition().getRightY())/2f;
-            float x2 = (next.getBojanPosition().getLeftX()+next.getBojanPosition().getRightX())/2f;
-            float y2 = (next.getBojanPosition().getLeftY()+next.getBojanPosition().getRightY())/2f;
-            shapeRenderer.rectLine(x1,y1,x2,y2,20);
-        }
+
+       for(GridLine gridLine : gridLines){
+           shapeRenderer.rectLine(gridLine.getX1(),gridLine.getY1(),gridLine.getX2(),gridLine.getY2(),20);
+       }
 
         shapeRenderer.end();
 
