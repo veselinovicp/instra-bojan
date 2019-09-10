@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.instra.bojan.elements.BojanCircle;
+import com.instra.bojan.elements.BojanPosition;
 import com.instra.bojan.elements.InstrumentGrid;
 import com.instra.bojan.engine.KeyboardGenerator;
 
@@ -49,13 +50,16 @@ public class InstraBojan extends ApplicationAdapter {
 		System.out.println("width: "+width+", height: "+height);
 
 		KeyboardGenerator keyboardGenerator = KeyboardGenerator.getKeyboardGenerator(Constants.KEYBOARD_TYPE_EXPONENTIAL_SPIRAL, Constants.INSTRUMENT_VIOLIN, width, height);
+		spiralCircles = keyboardGenerator.getSpiralCircles();
 
 
-		InstrumentGrid instrumentGrid = new InstrumentGrid(keyboardGenerator.getGridLines(200));
+		BojanPosition firstCircle = spiralCircles.get(0).getBojanPosition();
+		float gridWidthStart = (firstCircle.getRightX()-firstCircle.getLeftX())/3f;
+		InstrumentGrid instrumentGrid = new InstrumentGrid(keyboardGenerator.getGridLines(200), gridWidthStart);
 
 		stage.addActor(instrumentGrid);
 
-		spiralCircles = keyboardGenerator.getSpiralCircles();
+
 
 		for(BojanCircle circle : spiralCircles){
 			stage.addActor(circle);
@@ -93,8 +97,7 @@ public class InstraBojan extends ApplicationAdapter {
 	@Override
 	public void resize(int width, int height) {
 		super.resize(width, height);
-//		viewport.update(width, height);
-//		stage.clear();
+
 		if(screenWidth!=width || screenHeight!=height) {
 			disposeStage();
 			fillStage(width, height);

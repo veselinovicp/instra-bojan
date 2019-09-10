@@ -15,12 +15,13 @@ public class InstrumentGrid extends Actor {
 
     private ShapeRenderer shapeRenderer;
 
-    float initialSize=50;
+    float initialSize;
 
 
-    public InstrumentGrid(List<GridLine> gridLines) {
+    public InstrumentGrid(List<GridLine> gridLines, float initialSize) {
 
         this.gridLines = gridLines;
+        this.initialSize = initialSize;
 
 
         shapeRenderer = new ShapeRenderer();

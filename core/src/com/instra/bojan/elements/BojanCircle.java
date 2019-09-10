@@ -61,4 +61,8 @@ public class BojanCircle extends Actor {
         remove();
     }
 
+
+    public BojanPosition getBojanPosition() {
+        return bojanPosition;
+    }
 }
