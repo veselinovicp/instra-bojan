@@ -4,18 +4,33 @@ import com.instra.bojan.Constants;
 
 public abstract class BojanInstrument {
 
+    protected int numOfOctaves;
+    protected int circlesPerOctave;
+
+
      abstract String getOctave(int i);
      abstract String getSoundFile(String tone, String octave);
 
-    public static BojanInstrument getBojanInstrument(String instrument){
+    public BojanInstrument(int numOfOctaves, int circlesPerOctave) {
+        this.numOfOctaves = numOfOctaves;
+        this.circlesPerOctave = circlesPerOctave;
+    }
+
+    public static BojanInstrument getBojanInstrument(String instrument, int numOfOctaves, int circlesPerOctave){
         if(instrument.equals(Constants.INSTRUMENT_VIOLIN)){
-            return new ViolinInstrument();
+            return new ViolinInstrument(numOfOctaves, circlesPerOctave);
         }
         throw new RuntimeException("No instrument: "+instrument+" found");
     }
 
+    public float getPitch(int i){
+        return 1 + ((i%circlesPerOctave)/(float)circlesPerOctave);
+    }
+
     public String getSound(int i) {
-        String tone ="";
+        String tone ="C";
+
+        /*String tone ="";
         if(i%7==0){
             tone="C";
         }
@@ -36,7 +51,7 @@ public abstract class BojanInstrument {
         }
         if(i%7==6){
             tone="B";
-        }
+        }*/
         String octave=getOctave(i);
 
         return getSoundFile(tone, octave);

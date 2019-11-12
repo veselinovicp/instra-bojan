@@ -9,14 +9,16 @@ public class TouchListener extends InputListener {
     private Sound sound;
     private long id;
     private boolean circlePressed = false;
+    private float pitch;
 
-    public TouchListener(Sound sound) {
+    public TouchListener(Sound sound, float pitch) {
         this.sound = sound;
+        this.pitch = pitch;
     }
 
     @Override
     public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-        id = sound.loop();
+        id = sound.loop(1, pitch, 0);
         circlePressed = true;
         return true;
     }

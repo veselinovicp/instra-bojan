@@ -105,4 +105,9 @@ public class InstraBojan extends ApplicationAdapter {
 			screenHeight=height;
 		}
 	}
+
+	@Override
+	public void dispose () {
+		disposeStage();
+	}
 }

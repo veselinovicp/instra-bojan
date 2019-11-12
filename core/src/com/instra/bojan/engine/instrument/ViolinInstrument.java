@@ -4,15 +4,15 @@ import com.badlogic.gdx.graphics.Color;
 
 public class ViolinInstrument extends BojanInstrument {
 
+    public ViolinInstrument(int numOfOctaves, int circlesPerOctave) {
+        super(numOfOctaves, circlesPerOctave);
+    }
+
     @Override
     String getOctave(int i) {
-        if(i<7){
-            return "4";
-        }
-        if(i<14){
-            return "5";
-        }
-        return "6";
+
+        int octave = (i / circlesPerOctave) + 4;
+        return "" + octave;
     }
 
     @Override

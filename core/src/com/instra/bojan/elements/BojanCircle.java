@@ -19,9 +19,10 @@ public class BojanCircle extends Actor {
     float width;
     float height;
 
+
     private TouchListener touchListener;
 
-    public BojanCircle(BojanPosition bojanPosition, Color color, Color activeColor, String sound) {
+    public BojanCircle(BojanPosition bojanPosition, Color color, Color activeColor, String sound, float pitch) {
         this.bojanPosition = bojanPosition;
         this.color=color;
         this.activeColor=activeColor;
@@ -33,8 +34,9 @@ public class BojanCircle extends Actor {
         setBounds(bojanPosition.getLeftX(),bojanPosition.getLeftY(),width,height);
 
         soundEffect = Gdx.audio.newSound(Gdx.files.internal(sound));
-        touchListener = new TouchListener(soundEffect);
+        touchListener = new TouchListener(soundEffect, pitch);
         addListener(touchListener);
+
 
     }
 
@@ -56,6 +58,8 @@ public class BojanCircle extends Actor {
     }
 
     public void dispose(){
+        soundEffect.dispose();
+        texture.dispose();
         setBounds(0,0,0,0);
         removeListener(touchListener);
         remove();
