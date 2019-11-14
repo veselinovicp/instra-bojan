@@ -62,15 +62,9 @@ public abstract class KeyboardGenerator {
 
         List<BojanCircle> bojanCircles = new ArrayList<BojanCircle>();
         for(int i=0; i<numOfOctaves*circlesPerOctave;i++){
-
-
-
             float angle = (float) i*angleDelta;
 
             BojanPosition bojanPosition = getBojanPosition(i, angle);
-
-
-
 
             String sound = bojanInstrument.getSound(i);
             float pitch = bojanInstrument.getPitch(i);
@@ -86,7 +80,9 @@ public abstract class KeyboardGenerator {
 
     private Color getActiveColor(Color color){
         Color activeColor = new Color(color);
-        activeColor.a=1;
+        activeColor.r=1-color.r;
+        activeColor.g=1-color.g;
+        activeColor.b=1-color.b;
         return activeColor;
     }
 
@@ -132,7 +128,7 @@ public abstract class KeyboardGenerator {
         float r =calculateColorComponent(rStart, rStop, percent);
         float g =calculateColorComponent(gStart, gStop, percent);
         float b =calculateColorComponent(bStart, bStop, percent);
-        return new Color(r, g, b, 0.5f);
+        return new Color(r, g, b, 1f);
 
     }
 

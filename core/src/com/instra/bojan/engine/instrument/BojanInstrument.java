@@ -20,11 +20,26 @@ public abstract class BojanInstrument {
         if(instrument.equals(Constants.INSTRUMENT_VIOLIN)){
             return new ViolinInstrument(numOfOctaves, circlesPerOctave);
         }
+        if(instrument.equals(Constants.INSTRUMENT_TRUMPET)){
+            return new TrumpetInstrument(numOfOctaves, circlesPerOctave);
+        }
+        if(instrument.equals(Constants.INSTRUMENT_PIANO)){
+            return new PianoInstrument(numOfOctaves, circlesPerOctave);
+        }
+        if(instrument.equals(Constants.INSTRUMENT_FREQUENCY)){
+            return new FrequencyInstrument(numOfOctaves, circlesPerOctave);
+        }
         throw new RuntimeException("No instrument: "+instrument+" found");
     }
 
     public float getPitch(int i){
         return 1 + ((i%circlesPerOctave)/(float)circlesPerOctave);
+        /*if(i%3==0){
+            return 2;
+        }else if(i%3==1){
+            return 3;
+        }
+        return 4;*/
     }
 
     public String getSound(int i) {

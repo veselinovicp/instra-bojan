@@ -5,6 +5,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class BojanCircle extends Actor {
@@ -34,7 +35,10 @@ public class BojanCircle extends Actor {
         setBounds(bojanPosition.getLeftX(),bojanPosition.getLeftY(),width,height);
 
         soundEffect = Gdx.audio.newSound(Gdx.files.internal(sound));
-        touchListener = new TouchListener(soundEffect, pitch);
+
+        Circle circle = new Circle(width/2, height/2, width/2);
+
+        touchListener = new TouchListener(soundEffect, pitch, circle);
         addListener(touchListener);
 
 
