@@ -16,12 +16,18 @@ public class BojanCircle extends Actor {
     private Color color;
     private Color activeColor;
     private Sound soundEffect;
+    private long soundEffectId;
 
     float width;
     float height;
 
+    private float pitch;
 
-    private TouchListener touchListener;
+
+    private Circle circle;
+    private Circle nextCircle = new Circle(0,0,0);;
+
+    private boolean playing = false;
 
     public BojanCircle(BojanPosition bojanPosition, Color color, Color activeColor, String sound, float pitch) {
         this.bojanPosition = bojanPosition;
@@ -36,23 +42,50 @@ public class BojanCircle extends Actor {
 
         soundEffect = Gdx.audio.newSound(Gdx.files.internal(sound));
 
-        Circle circle = new Circle(width/2, height/2, width/2);
-
-        touchListener = new TouchListener(soundEffect, pitch, circle);
-        addListener(touchListener);
+        circle = new Circle(bojanPosition.getLeftX()+width/2, bojanPosition.getLeftY()+height/2, width/2);
 
 
+        this.pitch=pitch;
+
+
+
+    }
+
+    private void stopPlaying() {
+        if (playing) {
+            soundEffect.stop(soundEffectId);
+            playing = false;
+        }
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
 
+        if(Gdx.input.isTouched()){
+            int inputX = Gdx.input.getX();
+            int inputY = Gdx.graphics.getHeight() - Gdx.input.getY();
+            if(circle.contains(inputX, inputY) && !nextCircle.contains(inputX, inputY)){
+
+                if(!playing) {
+                    soundEffectId = soundEffect.loop(1, pitch, 0);
+                    playing = true;
+                }
+            }else{
+                stopPlaying();
+            }
+        }else {
+            stopPlaying();
+        }
+
+
         //public void draw (Texture texture, float x, float y, float width, float height);
-        if(touchListener.isCirclePressed()){
+        if(playing){
             batch.setColor(activeColor);
         }else {
             batch.setColor(color);
         }
+
+
 
         if(!batch.isDrawing()){
             batch.begin();
@@ -65,12 +98,19 @@ public class BojanCircle extends Actor {
         soundEffect.dispose();
         texture.dispose();
         setBounds(0,0,0,0);
-        removeListener(touchListener);
         remove();
     }
 
 
     public BojanPosition getBojanPosition() {
         return bojanPosition;
+    }
+
+    public Circle getCircle() {
+        return circle;
+    }
+
+    public void setNextCircle(Circle nextCircle) {
+        this.nextCircle = nextCircle;
     }
 }

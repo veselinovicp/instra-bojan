@@ -1,12 +1,13 @@
 package com.instra.bojan.engine;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 import com.instra.bojan.Constants;
 import com.instra.bojan.elements.BojanCircle;
 import com.instra.bojan.elements.BojanPosition;
 import com.instra.bojan.elements.GridLine;
-import com.instra.bojan.engine.instrument.BojanInstrument;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,8 @@ public abstract class KeyboardGenerator {
 
     protected float circleWidthEnd;
     protected float circleHeightEnd;
-    private BojanInstrument bojanInstrument;
+
+    private String instrument;
 
 
     public KeyboardGenerator(String instrument, float width, float height) {
@@ -35,7 +37,7 @@ public abstract class KeyboardGenerator {
         circleHeightEnd = Math.min(width, height)/24;
         circleWidthEnd = circleHeightEnd;
 
-        bojanInstrument = BojanInstrument.getBojanInstrument(instrument, numOfOctaves, circlesPerOctave);
+        this.instrument = instrument;
 
 
 
@@ -61,21 +63,35 @@ public abstract class KeyboardGenerator {
         float angleDelta=(float) ( 2*Math.PI)/circlesPerOctave;
 
         List<BojanCircle> bojanCircles = new ArrayList<BojanCircle>();
+
         for(int i=0; i<numOfOctaves*circlesPerOctave;i++){
             float angle = (float) i*angleDelta;
 
             BojanPosition bojanPosition = getBojanPosition(i, angle);
 
-            String sound = bojanInstrument.getSound(i);
-            float pitch = bojanInstrument.getPitch(i);
+
+            float pitch = getPitch(i);
 
             Color color = getColor(i);
             Color activeColor = getActiveColor(color);
 
-            BojanCircle bojanCircle = new BojanCircle(bojanPosition, color, activeColor, sound, pitch);
+
+
+            BojanCircle bojanCircle = new BojanCircle(bojanPosition, color, activeColor, instrument, pitch);
             bojanCircles.add(bojanCircle);
+
         }
+        for(int i=0; i<numOfOctaves*circlesPerOctave-1;i++){
+            bojanCircles.get(i).setNextCircle(bojanCircles.get(i+1).getCircle());
+        }
+
+
         return bojanCircles;
+    }
+
+    private float getPitch(int i){
+        return 1 + (i/circlesPerOctave)+((i%circlesPerOctave)/(float)circlesPerOctave);
+
     }
 
     private Color getActiveColor(Color color){

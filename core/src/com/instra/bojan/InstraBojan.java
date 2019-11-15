@@ -49,7 +49,7 @@ public class InstraBojan extends ApplicationAdapter {
 
 		System.out.println("width: "+width+", height: "+height);
 
-		KeyboardGenerator keyboardGenerator = KeyboardGenerator.getKeyboardGenerator(Constants.KEYBOARD_TYPE_EXPONENTIAL_SPIRAL, Constants.INSTRUMENT_TRUMPET, width, height);
+		KeyboardGenerator keyboardGenerator = KeyboardGenerator.getKeyboardGenerator(Constants.KEYBOARD_TYPE_EXPONENTIAL_SPIRAL, Constants.INSTRUMENT_BELL, width, height);
 		spiralCircles = keyboardGenerator.getSpiralCircles();
 
 
