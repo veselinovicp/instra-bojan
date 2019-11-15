@@ -90,7 +90,8 @@ public abstract class KeyboardGenerator {
     }
 
     private float getPitch(int i){
-        return 1 + (i/circlesPerOctave)+((i%circlesPerOctave)/(float)circlesPerOctave);
+//        return 1 + (i/circlesPerOctave)+((i%circlesPerOctave)/(float)circlesPerOctave);
+        return (float)(Math.pow(2, i/(float)circlesPerOctave));
 
     }
 

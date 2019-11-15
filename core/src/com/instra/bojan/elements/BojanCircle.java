@@ -69,6 +69,7 @@ public class BojanCircle extends Actor {
                 if(!playing) {
                     soundEffectId = soundEffect.loop(1, pitch, 0);
                     playing = true;
+//                    System.out.println("play pitch: "+pitch);
                 }
             }else{
                 stopPlaying();
