@@ -15,7 +15,7 @@ import java.util.List;
 public abstract class KeyboardGenerator {
 
     protected int numOfOctaves = 3;
-    protected int circlesPerOctave = 100;
+    protected int circlesPerOctave = 70;
 
     protected float width;
     protected float height;

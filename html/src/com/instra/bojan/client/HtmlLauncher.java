@@ -20,9 +20,10 @@ public class HtmlLauncher extends GwtApplication {
 
                 Window.enableScrolling(false);
                 Window.setMargin("0");
-                cfg.preferFlash=false;
+//                cfg.preferFlash=false;
                 cfg.width = w;
                 cfg.height = h;
+//                cfg.
 
 
 

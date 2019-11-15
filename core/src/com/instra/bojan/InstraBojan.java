@@ -92,6 +92,7 @@ public class InstraBojan extends ApplicationAdapter {
 
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		stage.draw();
+		Gdx.app.debug("fps: ", String.valueOf(Gdx.graphics.getFramesPerSecond()));
 	}
 
 	@Override
