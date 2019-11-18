@@ -4,8 +4,8 @@
               <title>instra-bojan</title>
               <meta http-equiv="content-type" content="text/html; charset=UTF-8">
               <link href="styles.css" rel="stylesheet" type="text/css">
-              <script src="soundmanager2-setup.js"></script>
-  			  <script src="soundmanager2-jsmin.js"></script>
+           <!--   <script src="soundmanager2-setup.js"></script>
+  			  <script src="soundmanager2-jsmin.js.bak"></script>-->
        </head>
 
        <body>
@@ -28,5 +28,45 @@
               }
               document.getElementById('embed-html').addEventListener('mousedown', handleMouseDown, false);
               document.getElementById('embed-html').addEventListener('mouseup', handleMouseUp, false);
+
+              // JavaScript to perform injection of scripts on HTML pages
+              // Used by JsTestRig class to test JavaScript
+
+              //Inject script into document
+              function injectScript(script) {
+                  var headTag = document.getElementsByTagName("HEAD")[0];
+                  if (headTag != null) {
+                      appendScript(script, headTag)
+                  } else {
+                      alert("error");
+                  }
+              }
+
+              //Append script to the tag
+              function appendScript(script, tag) {
+                  if (tag != null) {
+                      var scriptTag = document.createElement("script");
+                      scriptTag.setAttribute("type", "text/javascript");
+                      scriptTag.setAttribute("language", "javascript");
+                      scriptTag.innerHTML = script;
+                      tag.appendChild(scriptTag);
+                  }
+              }
+
+              function injectSound(){
+                  injectScript("soundmanager2-setup.js");
+
+                  injectScript("soundmanager2-jsmin.js");
+
+                  alert("done");
+
+
+
+              }
+
+
+
+
+
        </script>
 </html>

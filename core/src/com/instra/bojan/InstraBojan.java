@@ -3,8 +3,10 @@ package com.instra.bojan;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+
 import com.instra.bojan.elements.BojanCircle;
 import com.instra.bojan.elements.BojanPosition;
 import com.instra.bojan.elements.InstrumentGrid;
@@ -12,18 +14,25 @@ import com.instra.bojan.engine.KeyboardGenerator;
 
 import java.util.List;
 
+import static com.badlogic.gdx.Application.LOG_INFO;
+
 public class InstraBojan extends ApplicationAdapter {
 	Stage stage;
 	ScreenViewport viewport;
 
 	int screenWidth;
 	int screenHeight;
-	List<BojanCircle> spiralCircles;
+	Group spiralCircles;
+
+	private KeyboardGenerator keyboardGenerator;
+	private InstrumentGrid instrumentGrid;
 
 
 	
 	@Override
 	public void create () {
+
+		Gdx.app.setLogLevel(LOG_INFO);
 
 
 
@@ -33,6 +42,9 @@ public class InstraBojan extends ApplicationAdapter {
 		screenWidth = Gdx.graphics.getWidth();
 		screenHeight = Gdx.graphics.getHeight();
 		fillStage(screenWidth, screenHeight);
+
+		Gdx.input.setInputProcessor(stage);
+
 
 
 
@@ -49,38 +61,48 @@ public class InstraBojan extends ApplicationAdapter {
 
 		System.out.println("width: "+width+", height: "+height);
 
-		KeyboardGenerator keyboardGenerator = KeyboardGenerator.getKeyboardGenerator(Constants.KEYBOARD_TYPE_EXPONENTIAL_SPIRAL, Constants.INSTRUMENT_STEEL_BELL_C6, width, height);
+		keyboardGenerator = KeyboardGenerator.getKeyboardGenerator(Constants.KEYBOARD_TYPE_EXPONENTIAL_SPIRAL, Constants.INSTRUMENT_VIOLINS, width, height);
 		spiralCircles = keyboardGenerator.getSpiralCircles();
 
 
-		BojanPosition firstCircle = spiralCircles.get(0).getBojanPosition();
+		BojanCircle first = (BojanCircle) (spiralCircles.getChildren().first());
+		BojanPosition firstCircle = first.getBojanPosition();
 		float gridWidthStart = (firstCircle.getRightX()-firstCircle.getLeftX())/3f;
-		InstrumentGrid instrumentGrid = new InstrumentGrid(keyboardGenerator.getGridLines(200), gridWidthStart);
+		instrumentGrid = new InstrumentGrid(keyboardGenerator.getGridLines(200), gridWidthStart);
 
 		stage.addActor(instrumentGrid);
 
 
 
-		for(BojanCircle circle : spiralCircles){
+		/*for(BojanCircle circle : spiralCircles){
 			stage.addActor(circle);
 
 
-		}
+		}*/
 
-		Gdx.input.setInputProcessor(stage);
+		stage.addActor(spiralCircles);
+
+
 	}
 
 	private void disposeStage() {
 		if(spiralCircles!=null){
-			for(BojanCircle circle : spiralCircles){
+
+			spiralCircles.getChildren().clear();
+
+			/*for(BojanCircle circle : spiralCircles){
 				circle.dispose();
 
-			}
+			}*/
+			keyboardGenerator.dispose();
+			instrumentGrid.dispose();
 		}
 		if(stage!=null){
 //			stage.clear();
 			stage.clear();
 			stage.dispose();
+
+
 
 
 
@@ -90,9 +112,13 @@ public class InstraBojan extends ApplicationAdapter {
 	@Override
 	public void render () {
 
+		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
 		stage.draw();
-		Gdx.app.debug("fps: ", String.valueOf(Gdx.graphics.getFramesPerSecond()));
+
+
 	}
 
 	@Override
@@ -104,11 +130,13 @@ public class InstraBojan extends ApplicationAdapter {
 			fillStage(width, height);
 			screenWidth=width;
 			screenHeight=height;
+
 		}
 	}
 
 	@Override
 	public void dispose () {
 		disposeStage();
+
 	}
 }

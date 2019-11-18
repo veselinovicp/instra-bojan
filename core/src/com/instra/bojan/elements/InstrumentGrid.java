@@ -47,4 +47,8 @@ public class InstrumentGrid extends Actor {
         batch.end();
 
     }
+
+    public void dispose(){
+        shapeRenderer.dispose();
+    }
 }

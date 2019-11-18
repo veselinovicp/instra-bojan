@@ -1,8 +1,12 @@
 package com.instra.bojan.engine;
 
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.instra.bojan.Constants;
 import com.instra.bojan.elements.BojanCircle;
 import com.instra.bojan.elements.BojanPosition;
@@ -15,7 +19,7 @@ import java.util.List;
 public abstract class KeyboardGenerator {
 
     protected int numOfOctaves = 3;
-    protected int circlesPerOctave = 70;
+    protected int circlesPerOctave = 32;
 
     protected float width;
     protected float height;
@@ -26,6 +30,10 @@ public abstract class KeyboardGenerator {
     protected float circleHeightEnd;
 
     private String instrument;
+
+    private  Texture texture;
+
+    private Sound sound;
 
 
     public KeyboardGenerator(String instrument, float width, float height) {
@@ -39,7 +47,32 @@ public abstract class KeyboardGenerator {
 
         this.instrument = instrument;
 
+        texture = new Texture(Gdx.files.internal("circle.png"));
 
+        /*switch(Gdx.app.getType()) {
+
+            case Android:
+                sound = Gdx.audio.newSound(Gdx.files.internal(instrument));
+                break;
+            case Desktop:
+                sound = Gdx.audio.newSound(Gdx.files.internal(instrument));
+                break;
+            case HeadlessDesktop:
+                sound = Gdx.audio.newSound(Gdx.files.internal(instrument));
+                break;
+            case Applet:
+                sound = Gdx.audio.newSound(Gdx.files.internal(instrument));
+                break;
+            case WebGL:
+                sound = Gdx.audio.newSound(Gdx.files.internal(instrument));
+                Gdx.
+                break;
+            case iOS:
+                sound = Gdx.audio.newSound(Gdx.files.internal(instrument));
+                break;
+        }*/
+
+        sound = Gdx.audio.newSound(Gdx.files.internal(instrument));
 
 
     }
@@ -57,7 +90,9 @@ public abstract class KeyboardGenerator {
     protected abstract float getScale();
 
 
-    public List<BojanCircle> getSpiralCircles() {
+    public Group getSpiralCircles() {
+
+        Group result = new Group();
 
 
         float angleDelta=(float) ( 2*Math.PI)/circlesPerOctave;
@@ -77,8 +112,9 @@ public abstract class KeyboardGenerator {
 
 
 
-            BojanCircle bojanCircle = new BojanCircle(bojanPosition, color, activeColor, instrument, pitch);
+            BojanCircle bojanCircle = new BojanCircle(texture, bojanPosition, color, activeColor, sound, pitch);
             bojanCircles.add(bojanCircle);
+            result.addActor(bojanCircle);
 
         }
         for(int i=0; i<numOfOctaves*circlesPerOctave-1;i++){
@@ -86,7 +122,7 @@ public abstract class KeyboardGenerator {
         }
 
 
-        return bojanCircles;
+        return result;
     }
 
     private float getPitch(int i){
@@ -202,6 +238,12 @@ public abstract class KeyboardGenerator {
     protected float getCartesionY(float angle, float radius){
         radius = radius * getScale()* Math.min(width, height) / height;
         return ((MathUtils.sin(angle)*radius*height)+height/2);
+    }
+
+    public void dispose(){
+        System.out.println("disposing");
+        texture.dispose();
+        sound.dispose();
     }
 
 
