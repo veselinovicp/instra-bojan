@@ -1,6 +1,5 @@
 package com.instra.bojan.engine;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
@@ -11,6 +10,7 @@ import com.instra.bojan.Constants;
 import com.instra.bojan.elements.BojanCircle;
 import com.instra.bojan.elements.BojanPosition;
 import com.instra.bojan.elements.GridLine;
+import com.instra.bojan.theory.Note;
 
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import java.util.List;
 public abstract class KeyboardGenerator {
 
     protected int numOfOctaves = 3;
-    protected int circlesPerOctave = 32;
+    protected int circlesPerOctave = 12;
 
     protected float width;
     protected float height;
@@ -89,10 +89,18 @@ public abstract class KeyboardGenerator {
     protected abstract float getRadius(float angle);
     protected abstract float getScale();
 
-
-    public Group getSpiralCircles() {
-
+    public Group getSpiralCirclesGroup(List<BojanCircle> bojanCircles) {
         Group result = new Group();
+        for(BojanCircle bojanCircle : bojanCircles) {
+            result.addActor(bojanCircle);
+        }
+        return result;
+    }
+
+
+    public List<BojanCircle> getSpiralCircles() {
+
+
 
 
         float angleDelta=(float) ( 2*Math.PI)/circlesPerOctave;
@@ -100,6 +108,34 @@ public abstract class KeyboardGenerator {
         List<BojanCircle> bojanCircles = new ArrayList<BojanCircle>();
 
         for(int i=0; i<numOfOctaves*circlesPerOctave;i++){
+            //1,3,6,8,11
+            if(i%12==1 || i%12==3 || i%12==6 || i%12==8 || i%12==11 ){
+                continue;
+            }
+
+            Note note = null;
+            if(i%12==0){
+                note = Note.DO;
+            }
+            if(i%12==2){
+                note = Note.RE;
+            }
+            if(i%12==4){
+                note = Note.MI;
+            }
+            if(i%12==5){
+                note = Note.FA;
+            }
+            if(i%12==7){
+                note = Note.SOL;
+            }
+            if(i%12==9){
+                note = Note.LA;
+            }
+            if(i%12==10){
+                note = Note.TI;
+            }
+
             float angle = (float) i*angleDelta;
 
             BojanPosition bojanPosition = getBojanPosition(i, angle);
@@ -112,17 +148,19 @@ public abstract class KeyboardGenerator {
 
 
 
-            BojanCircle bojanCircle = new BojanCircle(texture, bojanPosition, color, activeColor, sound, pitch);
+            BojanCircle bojanCircle = new BojanCircle(texture, bojanPosition, color, activeColor, sound, pitch, note);
             bojanCircles.add(bojanCircle);
-            result.addActor(bojanCircle);
+
 
         }
-        for(int i=0; i<numOfOctaves*circlesPerOctave-1;i++){
+//        int numOfCircles = numOfOctaves * circlesPerOctave;
+        int numOfCircles = bojanCircles.size();
+        for(int i = 0; i< numOfCircles -1; i++){
             bojanCircles.get(i).setNextCircle(bojanCircles.get(i+1).getCircle());
         }
 
 
-        return result;
+        return bojanCircles;
     }
 
     private float getPitch(int i){

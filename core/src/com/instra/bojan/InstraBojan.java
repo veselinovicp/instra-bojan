@@ -7,6 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import com.instra.bojan.communication.Commander;
+import com.instra.bojan.communication.CommanderType;
 import com.instra.bojan.elements.BojanCircle;
 import com.instra.bojan.elements.BojanPosition;
 import com.instra.bojan.elements.InstrumentGrid;
@@ -23,6 +25,7 @@ public class InstraBojan extends ApplicationAdapter {
 	int screenWidth;
 	int screenHeight;
 	Group spiralCircles;
+	List<BojanCircle> circles;
 
 	private KeyboardGenerator keyboardGenerator;
 	private InstrumentGrid instrumentGrid;
@@ -62,10 +65,12 @@ public class InstraBojan extends ApplicationAdapter {
 		System.out.println("width: "+width+", height: "+height);
 
 		keyboardGenerator = KeyboardGenerator.getKeyboardGenerator(Constants.KEYBOARD_TYPE_EXPONENTIAL_SPIRAL, Constants.INSTRUMENT_VIOLINS, width, height);
-		spiralCircles = keyboardGenerator.getSpiralCircles();
+		circles = keyboardGenerator.getSpiralCircles();
+
+		this.spiralCircles = keyboardGenerator.getSpiralCirclesGroup(circles);
 
 
-		BojanCircle first = (BojanCircle) (spiralCircles.getChildren().first());
+		BojanCircle first = (BojanCircle) (this.spiralCircles.getChildren().first());
 		BojanPosition firstCircle = first.getBojanPosition();
 		float gridWidthStart = (firstCircle.getRightX()-firstCircle.getLeftX())/3f;
 		instrumentGrid = new InstrumentGrid(keyboardGenerator.getGridLines(200), gridWidthStart);
@@ -80,7 +85,7 @@ public class InstraBojan extends ApplicationAdapter {
 
 		}*/
 
-		stage.addActor(spiralCircles);
+		stage.addActor(this.spiralCircles);
 
 
 	}
@@ -109,6 +114,7 @@ public class InstraBojan extends ApplicationAdapter {
 		}
 	}
 
+
 	@Override
 	public void render () {
 
@@ -116,7 +122,16 @@ public class InstraBojan extends ApplicationAdapter {
 
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+
+
+		stage.act();
 		stage.draw();
+
+		/*if(!commanderActive){
+			commanderActive = true;
+			Commander commander = Commander.getCommander(CommanderType.PLAY, circles);
+			commander.execute();
+		}*/
 
 
 	}
@@ -125,11 +140,19 @@ public class InstraBojan extends ApplicationAdapter {
 	public void resize(int width, int height) {
 		super.resize(width, height);
 
+
+
 		if(screenWidth!=width || screenHeight!=height) {
 			disposeStage();
 			fillStage(width, height);
 			screenWidth=width;
 			screenHeight=height;
+
+
+
+				Commander commander = Commander.getCommander(CommanderType.PLAY, circles);
+				commander.execute();
+
 
 		}
 	}
