@@ -1,14 +1,11 @@
 package com.instra.bojan.state;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.instra.bojan.elements.BojanCircle;
+import com.instra.bojan.theory.Note;
 
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,17 +13,20 @@ public class ListenState extends BojanState{
 
     private BojanState defaultState;
 
+    private Note note;
+
     private Logger logger = Logger.getLogger("ListenState");
 
 
-    public ListenState(BojanCircle bojanCircle) {
+    public ListenState(BojanCircle bojanCircle, Note note) {
         super(bojanCircle);
+        this.note = note;
     }
 
     @Override
     public void start() {
 
-        defaultState = BojanStateFactory.getState(BojanStateType.USUAL, bojanCircle);
+        defaultState = BojanStateFactory.getState(BojanStateType.USUAL, bojanCircle, null);
         bojanCircle.setState(this);
 
 
@@ -67,7 +67,12 @@ public class ListenState extends BojanState{
         defaultState.act(delta);
 
         if(bojanCircle.isJustStoppedPlaying()){
-            logger.log(Level.SEVERE,"Just stopped playing: "+bojanCircle.getNote());
+
+            String result = "correct";
+            if(note != bojanCircle.getNote()){
+                result = "incorrect";
+            }
+            logger.log(Level.SEVERE,"Just stopped playing: "+bojanCircle.getNote()+" "+result);
             bojanCircle.setJustStoppedPlaying(false);
         }
     }

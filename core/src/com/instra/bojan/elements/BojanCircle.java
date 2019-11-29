@@ -1,6 +1,5 @@
 package com.instra.bojan.elements;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 
 import com.badlogic.gdx.graphics.Color;
@@ -8,8 +7,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
-import com.badlogic.gdx.utils.Pool;
 
 import com.instra.bojan.state.BojanState;
 import com.instra.bojan.state.BojanStateFactory;
@@ -72,7 +69,7 @@ public class BojanCircle extends Actor {
         this.pitch=pitch;
         this.texture = texture;
 
-        state = BojanStateFactory.getState(BojanStateType.USUAL, this);
+        state = BojanStateFactory.getState(BojanStateType.USUAL, this, null);
         logger.log(Level.SEVERE,"Created");
 
 

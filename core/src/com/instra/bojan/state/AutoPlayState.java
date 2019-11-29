@@ -5,8 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 import com.instra.bojan.elements.BojanCircle;
 
-import java.util.logging.Level;
-
 public class AutoPlayState extends BojanState {
 
 
@@ -42,12 +40,12 @@ public class AutoPlayState extends BojanState {
             super.end();
             sound.stop(soundId);
 
-            BojanState state = BojanStateFactory.getState(BojanStateType.USUAL, bojanCircle);
+            BojanState state = BojanStateFactory.getState(BojanStateType.USUAL, bojanCircle, null);
             bojanCircle.setState(state);
 
-            if(nextState!=null){
-                nextState.start();
-            }
+
+            startNextStates();
+
 
         }
     }
