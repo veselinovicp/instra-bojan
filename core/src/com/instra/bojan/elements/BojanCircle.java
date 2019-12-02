@@ -69,8 +69,8 @@ public class BojanCircle extends Actor {
         this.pitch=pitch;
         this.texture = texture;
 
-        state = BojanStateFactory.getState(BojanStateType.USUAL, this, null);
-        logger.log(Level.SEVERE,"Created");
+        state = BojanStateFactory.getState(BojanStateType.USUAL, this);
+//        logger.log(Level.SEVERE,"Created");
 
 
 
@@ -81,11 +81,13 @@ public class BojanCircle extends Actor {
 
     @Override
     public void act(float delta) {
+
         super.act(delta);
+        state.act(delta);
         /*if(action != null){
             action.act(delta);
         }*/
-        state.act(delta);
+
 
     }
 
@@ -153,6 +155,7 @@ public class BojanCircle extends Actor {
     }
 
     public void setState(BojanState state) {
+        soundEffect.stop();
         this.state = state;
     }
 

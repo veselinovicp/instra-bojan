@@ -4,7 +4,11 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import com.instra.bojan.communication.Commander;
@@ -30,12 +34,15 @@ public class InstraBojan extends ApplicationAdapter {
 	private KeyboardGenerator keyboardGenerator;
 	private InstrumentGrid instrumentGrid;
 
+	private Skin skin;
+
 
 	
 	@Override
 	public void create () {
 
 		Gdx.app.setLogLevel(LOG_INFO);
+		skin = new Skin(Gdx.files.internal("comic-ui.json"));
 
 
 
@@ -64,7 +71,7 @@ public class InstraBojan extends ApplicationAdapter {
 
 		System.out.println("width: "+width+", height: "+height);
 
-		keyboardGenerator = KeyboardGenerator.getKeyboardGenerator(Constants.KEYBOARD_TYPE_EXPONENTIAL_SPIRAL, Constants.INSTRUMENT_VIOLINS, width, height);
+		keyboardGenerator = KeyboardGenerator.getKeyboardGenerator(Constants.KEYBOARD_TYPE_EXPONENTIAL_SPIRAL, Constants.INSTRUMENT_FREQUENCY, width, height);
 		circles = keyboardGenerator.getSpiralCircles();
 
 		this.spiralCircles = keyboardGenerator.getSpiralCirclesGroup(circles);
@@ -86,6 +93,35 @@ public class InstraBojan extends ApplicationAdapter {
 		}*/
 
 		stage.addActor(this.spiralCircles);
+
+		final TextButton playButton = new TextButton("Play",skin,"default");
+		playButton.setWidth(200);
+		playButton.setHeight(50);
+
+		playButton.setPosition(0,Gdx.graphics.getHeight()-50);
+
+        playButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Commander commander = Commander.getCommander(CommanderType.PLAY, circles);
+                commander.execute();
+            }
+        });
+		stage.addActor(playButton);
+
+		final TextButton learnButton = new TextButton("Learn",skin,"default");
+		learnButton.setWidth(200);
+		learnButton.setHeight(50);
+		learnButton.setPosition(200,Gdx.graphics.getHeight()-50);
+
+		learnButton.addListener(new ClickListener(){
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				Commander commander = Commander.getCommander(CommanderType.LEARN, circles);
+				commander.execute();
+			}
+		});
+		stage.addActor(learnButton);
 
 
 	}
@@ -114,6 +150,9 @@ public class InstraBojan extends ApplicationAdapter {
 		}
 	}
 
+	boolean commanderActive = false;
+
+	int renderNum = 0;
 
 	@Override
 	public void render () {
@@ -122,16 +161,21 @@ public class InstraBojan extends ApplicationAdapter {
 
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+		/*if(!commanderActive && renderNum > 1000){
+
+			commanderActive = true;
+			Commander commander = Commander.getCommander(CommanderType.PLAY, circles);
+			commander.execute();
+		}
+*/
 
 
 		stage.act();
 		stage.draw();
 
-		/*if(!commanderActive){
-			commanderActive = true;
-			Commander commander = Commander.getCommander(CommanderType.PLAY, circles);
-			commander.execute();
-		}*/
+		renderNum++;
+
+
 
 
 	}
@@ -150,8 +194,8 @@ public class InstraBojan extends ApplicationAdapter {
 
 
 
-				Commander commander = Commander.getCommander(CommanderType.PLAY, circles);
-				commander.execute();
+				/*Commander commander = Commander.getCommander(CommanderType.PLAY, circles);
+				commander.execute();*/
 
 
 		}

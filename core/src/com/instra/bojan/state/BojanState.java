@@ -36,4 +36,12 @@ public abstract class BojanState {
     public void setNextStates(List<BojanState> nextStates) {
         this.nextStates = nextStates;
     }
+
+    public List<BojanState> getNextStates() {
+        return nextStates;
+    }
+
+    public BojanCircle getBojanCircle() {
+        return bojanCircle;
+    }
 }

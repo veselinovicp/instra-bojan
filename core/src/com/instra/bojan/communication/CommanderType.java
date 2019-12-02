@@ -1,5 +1,6 @@
 package com.instra.bojan.communication;
 
 public enum CommanderType {
-    PLAY
+    PLAY,
+    LEARN
 }

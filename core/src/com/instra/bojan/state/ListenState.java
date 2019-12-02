@@ -26,39 +26,8 @@ public class ListenState extends BojanState{
     @Override
     public void start() {
 
-        defaultState = BojanStateFactory.getState(BojanStateType.USUAL, bojanCircle, null);
+        defaultState = BojanStateFactory.getState(BojanStateType.USUAL, bojanCircle);
         bojanCircle.setState(this);
-
-
-
-        bojanCircle.addListener(new InputListener(){
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                super.touchUp(event, x, y, pointer, button);
-                System.out.println("touch up");
-            }
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-
-        });
-
-        bojanCircle.addCaptureListener(new InputListener(){
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                super.touchUp(event, x, y, pointer, button);
-                System.out.println("touch up 2");
-            }
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return true;
-            }
-
-
-        });
 
     }
 
@@ -67,13 +36,17 @@ public class ListenState extends BojanState{
         defaultState.act(delta);
 
         if(bojanCircle.isJustStoppedPlaying()){
-
+            bojanCircle.setJustStoppedPlaying(false);
+            bojanCircle.setState(defaultState);
             String result = "correct";
             if(note != bojanCircle.getNote()){
                 result = "incorrect";
+
             }
             logger.log(Level.SEVERE,"Just stopped playing: "+bojanCircle.getNote()+" "+result);
-            bojanCircle.setJustStoppedPlaying(false);
+
+            startNextStates();
+
         }
     }
 

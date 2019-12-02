@@ -39,7 +39,7 @@ public class UsualState extends BojanState {
         soundEffect = bojanCircle.getSoundEffect();
         bojanPosition = bojanCircle.getBojanPosition();
         stateUtils = new StateUtils(bojanCircle);
-        logger.log(Level.SEVERE,"Created");
+//        logger.log(Level.SEVERE,"Created");
 
 
 
