@@ -1,5 +1,6 @@
 package com.instra.bojan.communication;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.instra.bojan.elements.BojanCircle;
 import com.instra.bojan.state.BojanState;
 import com.instra.bojan.state.BojanStateFactory;
@@ -66,17 +67,6 @@ public class LearnCommander extends Commander{
         }
 
 
-        //TODO here lies the problem
-        /*for(int i=0; i<parts.size()-1;i++){
-            List<BojanState> states = parts.get(i).getNextStates();
-            Note note = commandUnits.get(i).getNote();
-            for(int j=0;j<states.size();j++){
-                if(note == circles.get(j).getNote()){
-                    states.get(j).setNextStates(Arrays.asList(parts.get(i+1)));
-                }
-            }
-        }*/
-
         for(int i=0; i<parts.size()-1;i++){
             BojanState state = parts.get(i);
             BojanState lastToPlayInLearnChain = lastToPlayInLearnChain(state, commandUnits);
@@ -137,7 +127,16 @@ public class LearnCommander extends Commander{
     private BojanState constructLearnChainPart(List<CommandUnit> commandUnits){
         BojanState playChain = constructPlayChain(commandUnits);
         List<BojanState> listenChain = constructListenChain(commandUnits);
-        lastToPlayInPlayChain(playChain).setNextStates(listenChain);
+
+
+        BojanState lastToPlayInPlayChain = lastToPlayInPlayChain(playChain);
+        BojanState messageState = BojanStateFactory.getState(BojanStateType.MESSAGE, circles.get(0), "  ...Now you...");
+        messageState.setNextStates(listenChain);
+
+
+//        lastToPlayInPlayChain.setNextStates(listenChain);
+        lastToPlayInPlayChain.setNextStates(Arrays.asList(messageState));
+
 
         return playChain;
     }
@@ -167,6 +166,9 @@ public class LearnCommander extends Commander{
             for(int j=0;j<circles.size();j++) {
                 BojanState state = BojanStateFactory.getState(BojanStateType.LISTEN, circles.get(j), unit.getNote());
 
+                BojanState messageState = BojanStateFactory.getState(BojanStateType.MESSAGE, circles.get(0), "  ...Sorry mate...");
+                state.setNextStates(Arrays.asList(messageState));
+
                 singleNoteListeners.add(state);
             }
 
@@ -185,7 +187,10 @@ public class LearnCommander extends Commander{
                 BojanCircle circle = circles.get(j);
                 if(circle.getNote() == note){
                     allStates.get(i).get(j).setNextStates(allStates.get(i+1));
-                }
+                }/*else{
+                    BojanState messageState = BojanStateFactory.getState(BojanStateType.MESSAGE, circle, "Sorry, not correct");
+                    allStates.get(i).get(j).setNextStates(Arrays.asList(messageState));
+                }*/
             }
         }
 

@@ -1,9 +1,8 @@
 package com.instra.bojan.communication;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.instra.bojan.elements.BojanCircle;
 import com.instra.bojan.state.BojanState;
-import com.instra.bojan.state.BojanStateFactory;
-import com.instra.bojan.state.BojanStateType;
 import com.instra.bojan.theory.Duration;
 import com.instra.bojan.theory.Note;
 

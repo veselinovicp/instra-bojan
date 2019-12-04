@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.instra.bojan.Constants;
 import com.instra.bojan.elements.BojanCircle;
 import com.instra.bojan.elements.BojanPosition;
@@ -35,10 +37,15 @@ public abstract class KeyboardGenerator {
 
     private Sound sound;
 
+    protected Skin skin;
+    protected Stage stage;
 
-    public KeyboardGenerator(String instrument, float width, float height) {
+
+    public KeyboardGenerator(String instrument, float width, float height, Skin skin, Stage stage) {
         this.width = width;
         this.height = height;
+        this.skin = skin;
+        this.stage = stage;
         circleHeightStart = Math.min(width, height)/6f;
         circleWidthStart = circleHeightStart;
 
@@ -77,9 +84,9 @@ public abstract class KeyboardGenerator {
 
     }
 
-    public static KeyboardGenerator getKeyboardGenerator(String keyboardType, String instrument, float width, float height){
+    public static KeyboardGenerator getKeyboardGenerator(String keyboardType, String instrument, float width, float height, Skin skin, Stage stage){
         if(keyboardType.equals(Constants.KEYBOARD_TYPE_EXPONENTIAL_SPIRAL)){
-            return new ExponentialKeyboardGenerator(instrument, width, height);
+            return new ExponentialKeyboardGenerator(instrument, width, height, skin, stage);
         }
         throw new RuntimeException("No keyboard by type: "+keyboardType+" found");
     }
@@ -148,7 +155,7 @@ public abstract class KeyboardGenerator {
 
 
 
-            BojanCircle bojanCircle = new BojanCircle(texture, bojanPosition, color, activeColor, sound, pitch, note);
+            BojanCircle bojanCircle = new BojanCircle(texture, bojanPosition, color, activeColor, sound, pitch, note, skin, stage);
             bojanCircles.add(bojanCircle);
 
 

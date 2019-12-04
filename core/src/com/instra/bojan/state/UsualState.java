@@ -4,11 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Pool;
 import com.instra.bojan.elements.BojanCircle;
 import com.instra.bojan.elements.BojanPosition;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class UsualState extends BojanState {

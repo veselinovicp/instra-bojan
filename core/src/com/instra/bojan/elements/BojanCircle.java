@@ -8,12 +8,13 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.instra.bojan.state.BojanState;
 import com.instra.bojan.state.BojanStateFactory;
 import com.instra.bojan.state.BojanStateType;
 import com.instra.bojan.theory.Note;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
@@ -49,11 +50,17 @@ public class BojanCircle extends Actor {
 
     private boolean justStoppedPlaying = false;
 
-    public BojanCircle(Texture texture, BojanPosition bojanPosition, Color color, Color activeColor, Sound sound, float pitch, Note note) {
+    private Skin skin;
+
+    private Stage stage;
+
+    public BojanCircle(Texture texture, BojanPosition bojanPosition, Color color, Color activeColor, Sound sound, float pitch, Note note, Skin skin, Stage stage) {
         this.note = note;
         this.bojanPosition = bojanPosition;
         this.color=color;
         this.activeColor=activeColor;
+        this.skin = skin;
+        this.stage = stage;
 
         width = bojanPosition.getRightX()-bojanPosition.getLeftX();
         height = bojanPosition.getRightY()-bojanPosition.getLeftY();
@@ -169,5 +176,14 @@ public class BojanCircle extends Actor {
 
     public Note getNote() {
         return note;
+    }
+
+    @Override
+    public Stage getStage() {
+        return stage;
+    }
+
+    public Skin getSkin() {
+        return skin;
     }
 }

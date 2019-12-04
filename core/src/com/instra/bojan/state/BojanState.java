@@ -14,8 +14,11 @@ public abstract class BojanState {
 
     protected List<BojanState> nextStates = new ArrayList<BojanState>();
 
+
+
     public BojanState(BojanCircle bojanCircle) {
         this.bojanCircle = bojanCircle;
+
     }
 
 

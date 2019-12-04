@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -42,7 +43,7 @@ public class InstraBojan extends ApplicationAdapter {
 	public void create () {
 
 		Gdx.app.setLogLevel(LOG_INFO);
-		skin = new Skin(Gdx.files.internal("comic-ui.json"));
+		skin = new Skin(Gdx.files.internal("star-soldier-ui.json"));
 
 
 
@@ -71,7 +72,7 @@ public class InstraBojan extends ApplicationAdapter {
 
 		System.out.println("width: "+width+", height: "+height);
 
-		keyboardGenerator = KeyboardGenerator.getKeyboardGenerator(Constants.KEYBOARD_TYPE_EXPONENTIAL_SPIRAL, Constants.INSTRUMENT_FREQUENCY, width, height);
+		keyboardGenerator = KeyboardGenerator.getKeyboardGenerator(Constants.KEYBOARD_TYPE_EXPONENTIAL_SPIRAL, Constants.INSTRUMENT_C4_LONG, width, height, skin, stage);
 		circles = keyboardGenerator.getSpiralCircles();
 
 		this.spiralCircles = keyboardGenerator.getSpiralCirclesGroup(circles);
@@ -94,7 +95,7 @@ public class InstraBojan extends ApplicationAdapter {
 
 		stage.addActor(this.spiralCircles);
 
-		final TextButton playButton = new TextButton("Play",skin,"default");
+		final TextButton playButton = new TextButton("Play",skin);
 		playButton.setWidth(200);
 		playButton.setHeight(50);
 
@@ -109,14 +110,18 @@ public class InstraBojan extends ApplicationAdapter {
         });
 		stage.addActor(playButton);
 
-		final TextButton learnButton = new TextButton("Learn",skin,"default");
+		final TextButton learnButton = new TextButton("Learn",skin);
 		learnButton.setWidth(200);
 		learnButton.setHeight(50);
 		learnButton.setPosition(200,Gdx.graphics.getHeight()-50);
 
+
+
 		learnButton.addListener(new ClickListener(){
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
+
+
 				Commander commander = Commander.getCommander(CommanderType.LEARN, circles);
 				commander.execute();
 			}
@@ -157,7 +162,7 @@ public class InstraBojan extends ApplicationAdapter {
 	@Override
 	public void render () {
 
-		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+		Gdx.gl.glClearColor(0, 0.1f, 0.2f, 1);
 
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 

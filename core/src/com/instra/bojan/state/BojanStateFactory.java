@@ -7,18 +7,21 @@ import com.instra.bojan.theory.Note;
 public class BojanStateFactory {
 
     public static BojanState getState(BojanStateType type, BojanCircle bojanCircle){
-        return getState(type, bojanCircle, null, null);
+        return getState(type, bojanCircle, null, null, "");
+    }
+    public static BojanState getState(BojanStateType type, BojanCircle bojanCircle, String message){
+        return getState(type, bojanCircle, null, null, message);
     }
 
     public static BojanState getState(BojanStateType type, BojanCircle bojanCircle, Note note){
-        return getState(type, bojanCircle, note, null);
+        return getState(type, bojanCircle, note, null, "");
     }
 
     public static BojanState getState(BojanStateType type, BojanCircle bojanCircle, Duration duration){
-        return getState(type, bojanCircle, null, duration);
+        return getState(type, bojanCircle, null, duration, "");
     }
 
-    public static BojanState getState(BojanStateType type, BojanCircle bojanCircle, Note note, Duration duration){
+    public static BojanState getState(BojanStateType type, BojanCircle bojanCircle, Note note, Duration duration, String message){
         if (type == BojanStateType.USUAL){
             return new UsualState(bojanCircle);
         }
@@ -27,6 +30,9 @@ public class BojanStateFactory {
         }
         if (type == BojanStateType.LISTEN){
             return new ListenState(bojanCircle, note);
+        }
+        if (type == BojanStateType.MESSAGE){
+            return new MessageState(bojanCircle, message);
         }
         throw new RuntimeException("No bojan state: "+type+" found");
     }

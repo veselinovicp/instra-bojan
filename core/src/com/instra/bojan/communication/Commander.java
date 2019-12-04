@@ -4,7 +4,6 @@ import com.instra.bojan.elements.BojanCircle;
 import com.instra.bojan.state.BojanState;
 import com.instra.bojan.state.BojanStateFactory;
 import com.instra.bojan.state.BojanStateType;
-import com.instra.bojan.theory.Duration;
 import com.instra.bojan.theory.Note;
 
 import java.util.ArrayList;
@@ -15,9 +14,12 @@ public abstract class Commander {
 
     protected List<BojanCircle> circles;
 
+
     public Commander(List<BojanCircle> circles)
     {
+
         this.circles = circles;
+
     }
 
     protected abstract BojanState getStateChain();

@@ -1,11 +1,9 @@
 package com.instra.bojan.state;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Pool;
-import com.instra.bojan.Constants;
 import com.instra.bojan.elements.BojanCircle;
 import com.instra.bojan.theory.Duration;
 
@@ -145,6 +143,8 @@ public class AutoPlayState extends BojanState {
 
 
     }
+
+
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
