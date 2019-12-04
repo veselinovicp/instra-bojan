@@ -69,6 +69,8 @@ public class PlayCommander extends Commander {
         );*/
 
 
-        return constructPlayChain(katarinaBarbara);
+        BojanState playChain = constructPlayChain(katarinaBarbara);
+        lastToPlayInPlayChain(playChain).setNextStates(constructDefaultStates());
+        return playChain;
     }
 }

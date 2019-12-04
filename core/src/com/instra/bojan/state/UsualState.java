@@ -48,6 +48,7 @@ public class UsualState extends BojanState {
 
     @Override
     public void start() {
+        bojanCircle.setState(this);
 
     }
 

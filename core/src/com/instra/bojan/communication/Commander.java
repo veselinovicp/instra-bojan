@@ -41,6 +41,16 @@ public abstract class Commander {
         throw new RuntimeException("No commander of type: "+type+" found");
     }
 
+    protected List<BojanState> constructDefaultStates(){
+        List<BojanState> result = new ArrayList<BojanState>();
+        for(BojanCircle circle : circles){
+            BojanState state = BojanStateFactory.getState(BojanStateType.USUAL, circle);
+            result.add(state);
+        }
+        return result;
+
+    }
+
 
 
     protected BojanState constructPlayChain(List<CommandUnit> commandUnits){
@@ -64,7 +74,21 @@ public abstract class Commander {
             currentState.setNextStates(Arrays.asList(nextState));
         }
 
+//        allStates.get(allStates.size()-1).setNextStates(constructDefaultStates());
+
         return result;
+    }
+
+    protected BojanState lastToPlayInPlayChain(BojanState playChain){
+        if(playChain.getNextStates().size()==0){
+            return playChain;
+        }
+        BojanState result= playChain.getNextStates().get(0);
+        while(result.getNextStates().size()>0){
+            result = result.getNextStates().get(0);
+        }
+        return result;
+
     }
 
     protected BojanCircle getCircleFromNote(Note note){

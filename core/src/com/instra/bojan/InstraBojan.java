@@ -43,7 +43,8 @@ public class InstraBojan extends ApplicationAdapter {
 	public void create () {
 
 		Gdx.app.setLogLevel(LOG_INFO);
-		skin = new Skin(Gdx.files.internal("star-soldier-ui.json"));
+//		skin = new Skin(Gdx.files.internal("star-soldier-ui.json"));//sgx-ui.json
+		skin = new Skin(Gdx.files.internal("Particle Park UI.json"));//sgx-ui.json
 
 
 

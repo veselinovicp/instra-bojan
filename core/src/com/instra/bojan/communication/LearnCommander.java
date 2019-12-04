@@ -50,7 +50,9 @@ public class LearnCommander extends Commander{
                 new CommandUnit(Note.DO, Duration.WHOLE)
         );
 
-       /* List<CommandUnit> katarinaBarbara = Arrays.asList(new CommandUnit(Note.MI, Duration.QUARTER),
+
+
+      /*  List<CommandUnit> katarinaBarbara = Arrays.asList(new CommandUnit(Note.MI, Duration.QUARTER),
                 new CommandUnit(Note.DO, Duration.QUARTER),
                 new CommandUnit(Note.RE, Duration.QUARTER)
         );*/
@@ -67,10 +69,20 @@ public class LearnCommander extends Commander{
         }
 
 
-        for(int i=0; i<parts.size()-1;i++){
+        for(int i=0; i<parts.size();i++){
             BojanState state = parts.get(i);
             BojanState lastToPlayInLearnChain = lastToPlayInLearnChain(state, commandUnits);
-            lastToPlayInLearnChain.setNextStates(Arrays.asList(parts.get(i+1)));
+            if(i==parts.size()-1){
+                BojanState messageState = BojanStateFactory.getState(BojanStateType.MESSAGE, circles.get(0), "You did it");
+                List<BojanState> defaultStates = constructDefaultStates();
+                messageState.setNextStates(defaultStates);
+                lastToPlayInLearnChain.setNextStates(Arrays.asList(messageState));
+
+            }else {
+                BojanState messageState = BojanStateFactory.getState(BojanStateType.MESSAGE, circles.get(0), "Good, now me..");
+                messageState.setNextStates(Arrays.asList(parts.get(i + 1)));
+                lastToPlayInLearnChain.setNextStates(Arrays.asList(messageState));
+            }
         }
 
 
@@ -78,6 +90,8 @@ public class LearnCommander extends Commander{
 
 
     }
+
+
 
     private BojanState lastToPlayInLearnChain(BojanState playChain, List<CommandUnit> commandUnits){
 
@@ -130,7 +144,7 @@ public class LearnCommander extends Commander{
 
 
         BojanState lastToPlayInPlayChain = lastToPlayInPlayChain(playChain);
-        BojanState messageState = BojanStateFactory.getState(BojanStateType.MESSAGE, circles.get(0), "  ...Now you...");
+        BojanState messageState = BojanStateFactory.getState(BojanStateType.MESSAGE, circles.get(0), "Now you");
         messageState.setNextStates(listenChain);
 
 
@@ -141,20 +155,12 @@ public class LearnCommander extends Commander{
         return playChain;
     }
 
-    private BojanState lastToPlayInPlayChain(BojanState playChain){
-        if(playChain.getNextStates().size()==0){
-            return playChain;
-        }
-        BojanState result= playChain.getNextStates().get(0);
-        while(result.getNextStates().size()>0){
-            result = result.getNextStates().get(0);
-        }
-        return result;
 
-    }
 
 
     private List<BojanState> constructListenChain(List<CommandUnit> commandUnits){
+
+        List<BojanState> defaultStates = constructDefaultStates();
 
 
         List<List<BojanState>> allStates = new ArrayList<List<BojanState>>();
@@ -166,7 +172,8 @@ public class LearnCommander extends Commander{
             for(int j=0;j<circles.size();j++) {
                 BojanState state = BojanStateFactory.getState(BojanStateType.LISTEN, circles.get(j), unit.getNote());
 
-                BojanState messageState = BojanStateFactory.getState(BojanStateType.MESSAGE, circles.get(0), "  ...Sorry mate...");
+                BojanState messageState = BojanStateFactory.getState(BojanStateType.MESSAGE, circles.get(0), "Sorry mate");
+                messageState.setNextStates(defaultStates);
                 state.setNextStates(Arrays.asList(messageState));
 
                 singleNoteListeners.add(state);
