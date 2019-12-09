@@ -5,12 +5,14 @@ import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Pool;
 import com.instra.bojan.elements.BojanCircle;
+import com.instra.bojan.state.actions.FadeOutAction;
+import com.instra.bojan.state.actions.FadeOutCallback;
 import com.instra.bojan.theory.Duration;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class AutoPlayState extends BojanState {
+public class AutoPlayState extends BojanState implements FadeOutCallback {
 
     private Duration duration;
 
@@ -24,8 +26,8 @@ public class AutoPlayState extends BojanState {
 
 
 
-    boolean startPlaying = false;
-    boolean stopPlaying = false;
+
+    private long soundEffectId;
 
 
 
@@ -35,14 +37,10 @@ public class AutoPlayState extends BojanState {
 
 
 
-
-
-//        private Sound sound;
-
         public AutoPlayAction(float duration) {
             super(duration);
             setDuration(duration);
-//            this.sound = bojanCircle.getSoundEffect();
+
 
         }
 
@@ -52,10 +50,11 @@ public class AutoPlayState extends BojanState {
 
 
 
-//            sound.loop(1, bojanCircle.getPitch(), 0);
-
             logger.log(Level.SEVERE,"Start auto play: "+bojanCircle.getNote());
-            startPlaying = true;
+
+
+            soundEffectId = bojanCircle.getSoundEffect().loop(1, bojanCircle.getPitch(), 0);
+            logger.log(Level.SEVERE,"Start action: "+bojanCircle.getNote());
 
         }
 
@@ -67,28 +66,12 @@ public class AutoPlayState extends BojanState {
         @Override
         protected void end() {
             super.end();
-//            sound.stop(soundId);
-//            sound.stop();
-//            sound.stop();
+
 
 
             logger.log(Level.SEVERE,"End auto play: "+bojanCircle.getNote());
+            bojanCircle.addAction(fadeOutActionPool.obtain());
 
-
-//            sound.setVolume(soundId,0);
-//            sound.dispose();
-
-
-
-
-            stopPlaying = true;
-
-          /*  BojanState state = BojanStateFactory.getState(BojanStateType.USUAL, bojanCircle);
-            bojanCircle.setState(state);*/
-
-
-
-//            startNextStates();
 
 
 
@@ -144,25 +127,34 @@ public class AutoPlayState extends BojanState {
 
     }
 
+    Pool<FadeOutAction> fadeOutActionPool = new Pool<FadeOutAction>(){
+        protected FadeOutAction newObject(){
+            return new FadeOutAction(stateUtils, AutoPlayState.this, soundEffectId);
+        }
+    };
 
+    @Override
+    public void beginFadeOut() {
+        playing = false;
+    }
+
+    @Override
+    public void end() {
+
+
+        logger.log(Level.SEVERE,"Stop action: "+bojanCircle.getNote());
+        BojanState state = BojanStateFactory.getState(BojanStateType.USUAL, bojanCircle);
+        bojanCircle.setState(state);
+        startNextStates();
+    }
+
+    boolean playing = true;
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        stateUtils.draw(batch, true);
+        stateUtils.draw(batch, playing);
 
-        if(startPlaying){
-            startPlaying = false;
-             bojanCircle.getSoundEffect().loop(1, bojanCircle.getPitch(), 0);
-            logger.log(Level.SEVERE,"Start action: "+bojanCircle.getNote());
-        }
-        if(stopPlaying){
-            stopPlaying = false;
-            bojanCircle.getSoundEffect().stop();
-            logger.log(Level.SEVERE,"Stop action: "+bojanCircle.getNote());
-            BojanState state = BojanStateFactory.getState(BojanStateType.USUAL, bojanCircle);
-            bojanCircle.setState(state);
-            startNextStates();
-        }
+
     }
 
 }

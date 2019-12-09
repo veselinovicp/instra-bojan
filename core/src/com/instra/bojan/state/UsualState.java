@@ -2,16 +2,18 @@ package com.instra.bojan.state;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.actions.TemporalAction;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Pool;
 import com.instra.bojan.elements.BojanCircle;
 import com.instra.bojan.elements.BojanPosition;
+import com.instra.bojan.state.actions.FadeOutAction;
+import com.instra.bojan.state.actions.FadeOutCallback;
 
 import java.util.logging.Logger;
 
-public class UsualState extends BojanState {
+public class UsualState extends BojanState implements FadeOutCallback {
 
 
     Logger logger = Logger.getLogger("UsualState");
@@ -58,17 +60,17 @@ public class UsualState extends BojanState {
     }
 
 
-    private VolumeDownAction volumeDownAction;
 
     private void stopPlaying() {
         if (playing) {
-            /*soundEffect.stop(soundEffectId);
-            playing = false;*/
 
-            volumeDownAction = volumeDownActionPool.obtain();
 
-            bojanCircle.addAction(volumeDownAction);
+//            fadeOutAction = fadeOutActionPool.obtain();
 
+            bojanCircle.addAction(fadeOutActionPool.obtain());
+
+
+//            bojanCircle.addAction(new com.instra.bojan.state.actions.FadeOutAction(stateUtils, this, soundEffectId));
 
 
 
@@ -77,54 +79,30 @@ public class UsualState extends BojanState {
 
 
 
-    Pool<VolumeDownAction> volumeDownActionPool = new Pool<VolumeDownAction>(){
-        protected VolumeDownAction newObject(){
-            return new VolumeDownAction();
+    Pool<FadeOutAction> fadeOutActionPool = new Pool<FadeOutAction>(){
+        protected FadeOutAction newObject(){
+            return new FadeOutAction(stateUtils, UsualState.this, soundEffectId);
         }
     };
 
-    boolean volumeDownEffect= false;
+    boolean fadeOutEffect = false;
 
-    class VolumeDownAction extends TemporalAction {
-
-        public VolumeDownAction() {
-
-
-            setReverse(true);
-            setDuration(0.2f);
-            playing = false;
-        }
-
-        @Override
-        protected void begin() {
-            super.begin();
-            volumeDownEffect = true;
-
-
-        }
-
-        @Override
-        protected void update(float percent) {
-
-            soundEffect.setVolume(soundEffectId, percent);
-        }
-
-        @Override
-        protected void end() {
-            super.end();
-            soundEffect.stop(soundEffectId);
-            volumeDownEffect= false;
-
-            bojanCircle.setJustStoppedPlaying(true);
-
-
-//            playing = false;
-        }
+    @Override
+    public void beginFadeOut() {
+        playing = false;
+        fadeOutEffect = true;
     }
 
     @Override
+    public void end() {
+        fadeOutEffect = false;
+    }
+
+
+
+    @Override
     public void draw(Batch batch, float parentAlpha) {
-        if(Gdx.input.isTouched() && !volumeDownEffect){
+        if(Gdx.input.isTouched() && !fadeOutEffect){
 
             int inputX = Gdx.input.getX();
             int inputY = Gdx.graphics.getHeight() - Gdx.input.getY();

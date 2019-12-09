@@ -25,6 +25,8 @@ public class ListenState extends BojanState{
     @Override
     public void start() {
 
+
+        bojanCircle.setJustStoppedPlaying(false);
         defaultState = BojanStateFactory.getState(BojanStateType.USUAL, bojanCircle);
         bojanCircle.setState(this);
 
@@ -43,6 +45,7 @@ public class ListenState extends BojanState{
 
             }
             logger.log(Level.SEVERE,"Just stopped playing: "+bojanCircle.getNote()+" "+result);
+
 
             startNextStates();
 

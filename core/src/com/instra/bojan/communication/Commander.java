@@ -4,21 +4,28 @@ import com.instra.bojan.elements.BojanCircle;
 import com.instra.bojan.state.BojanState;
 import com.instra.bojan.state.BojanStateFactory;
 import com.instra.bojan.state.BojanStateType;
+import com.instra.bojan.theory.Duration;
 import com.instra.bojan.theory.Note;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public abstract class Commander {
 
+    protected Logger logger = Logger.getLogger("Commander");
+
     protected List<BojanCircle> circles;
 
+    protected String notation;
 
-    public Commander(List<BojanCircle> circles)
+    public Commander(List<BojanCircle> circles, String notation)
     {
 
         this.circles = circles;
+        this.notation = notation;
 
     }
 
@@ -26,17 +33,31 @@ public abstract class Commander {
 
 
     public void execute(){
+        logger.log(Level.SEVERE, "Start");
         getStateChain().start();
 
 
     }
 
-    public static Commander getCommander(CommanderType type, List<BojanCircle> circles){
+    protected List<CommandUnit> readTextNotation(String text){
+        List<CommandUnit> result = new ArrayList<CommandUnit>();
+        for(String singleUnit : text.split(";")){
+            String[] split = singleUnit.split(",");
+            String note = split[0];
+            String duration = split[1];
+            CommandUnit unit = new CommandUnit(Note.getEnum(note), Duration.getEnum(duration));
+            result.add(unit);
+
+        }
+        return result;
+    }
+
+    public static Commander getCommander(CommanderType type, List<BojanCircle> circles, String notation){
         if(type == CommanderType.PLAY){
-            return new PlayCommander(circles);
+            return new PlayCommander(circles, notation);
         }
         if(type == CommanderType.LEARN){
-            return new LearnCommander(circles);
+            return new LearnCommander(circles, notation);
         }
         throw new RuntimeException("No commander of type: "+type+" found");
     }

@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import com.instra.bojan.communication.Commander;
 import com.instra.bojan.communication.CommanderType;
+import com.instra.bojan.data.Song;
 import com.instra.bojan.elements.BojanCircle;
 import com.instra.bojan.elements.BojanPosition;
 import com.instra.bojan.elements.InstrumentGrid;
@@ -96,6 +97,8 @@ public class InstraBojan extends ApplicationAdapter {
 
 		stage.addActor(this.spiralCircles);
 
+		final SelectBox<Song> songsDropDown=new SelectBox<Song>(skin);
+
 		final TextButton playButton = new TextButton("Play",skin);
 		playButton.setWidth(200);
 		playButton.setHeight(50);
@@ -105,7 +108,7 @@ public class InstraBojan extends ApplicationAdapter {
         playButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Commander commander = Commander.getCommander(CommanderType.PLAY, circles);
+                Commander commander = Commander.getCommander(CommanderType.PLAY, circles, songsDropDown.getSelected().getNotation());
                 commander.execute();
             }
         });
@@ -118,16 +121,40 @@ public class InstraBojan extends ApplicationAdapter {
 
 
 
+
 		learnButton.addListener(new ClickListener(){
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 
 
-				Commander commander = Commander.getCommander(CommanderType.LEARN, circles);
+				Commander commander = Commander.getCommander(CommanderType.LEARN, circles, songsDropDown.getSelected().getNotation());
 				commander.execute();
 			}
 		});
 		stage.addActor(learnButton);
+
+
+		String[] markoSkaceSplit = Constants.MARKO_SKAČE_SONG.split("---");
+		Song markoSkace = new Song(markoSkaceSplit[0], markoSkaceSplit[1]);
+
+		String[] zajcekDolgouscekSplit = Constants.ZAJČEK_DOLGOUŠČEK_SONG.split("---");
+		Song zajcekDolgouscek = new Song(zajcekDolgouscekSplit[0], zajcekDolgouscekSplit[1]);
+
+
+		String[] kuzaPaziSplit = Constants.KUŽA_PAZI_SONG.split("---");
+		Song kuzaPazi = new Song(kuzaPaziSplit[0], kuzaPaziSplit[1]);
+
+		songsDropDown.setItems(markoSkace, zajcekDolgouscek, kuzaPazi);
+
+		songsDropDown.setWidth(200);
+		songsDropDown.setHeight(50);
+		songsDropDown.setPosition(400,Gdx.graphics.getHeight()-50);
+
+
+		stage.addActor(songsDropDown);
+
+
+
 
 
 	}

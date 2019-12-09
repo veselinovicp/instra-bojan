@@ -1,11 +1,9 @@
 package com.instra.bojan.communication;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.instra.bojan.elements.BojanCircle;
 import com.instra.bojan.state.BojanState;
 import com.instra.bojan.state.BojanStateFactory;
 import com.instra.bojan.state.BojanStateType;
-import com.instra.bojan.theory.Duration;
 import com.instra.bojan.theory.Note;
 
 import java.util.ArrayList;
@@ -13,14 +11,16 @@ import java.util.Arrays;
 import java.util.List;
 
 public class LearnCommander extends Commander{
-    public LearnCommander(List<BojanCircle> circles) {
-        super(circles);
+
+
+    public LearnCommander(List<BojanCircle> circles, String notation) {
+        super(circles, notation);
     }
 
 
     @Override
     protected BojanState getStateChain() {
-        List<CommandUnit> katarinaBarbara = Arrays.asList(new CommandUnit(Note.MI, Duration.QUARTER),
+     /*   List<CommandUnit> katarinaBarbara = Arrays.asList(new CommandUnit(Note.MI, Duration.QUARTER),
                 new CommandUnit(Note.DO, Duration.QUARTER),
                 new CommandUnit(Note.MI, Duration.QUARTER),
                 new CommandUnit(Note.DO, Duration.QUARTER),
@@ -28,10 +28,10 @@ public class LearnCommander extends Commander{
                 new CommandUnit(Note.RE, Duration.QUARTER),
                 new CommandUnit(Note.RE, Duration.QUARTER),
                 new CommandUnit(Note.RE, Duration.QUARTER),
-                new CommandUnit(Note.SOL, Duration.QUARTER),
-                new CommandUnit(Note.SOL, Duration.QUARTER),
-                new CommandUnit(Note.SOL, Duration.QUARTER),
-                new CommandUnit(Note.SOL, Duration.QUARTER),
+                new CommandUnit(Note.SO, Duration.QUARTER),
+                new CommandUnit(Note.SO, Duration.QUARTER),
+                new CommandUnit(Note.SO, Duration.QUARTER),
+                new CommandUnit(Note.SO, Duration.QUARTER),
                 new CommandUnit(Note.MI, Duration.QUARTER),
                 new CommandUnit(Note.DO, Duration.QUARTER),
                 new CommandUnit(Note.DO, Duration.HALF),
@@ -43,20 +43,17 @@ public class LearnCommander extends Commander{
                 new CommandUnit(Note.RE, Duration.QUARTER),
                 new CommandUnit(Note.RE, Duration.QUARTER),
                 new CommandUnit(Note.RE, Duration.QUARTER),
-                new CommandUnit(Note.SOL, Duration.QUARTER),
-                new CommandUnit(Note.SOL, Duration.QUARTER),
-                new CommandUnit(Note.SOL, Duration.QUARTER),
-                new CommandUnit(Note.SOL, Duration.QUARTER),
+                new CommandUnit(Note.SO, Duration.QUARTER),
+                new CommandUnit(Note.SO, Duration.QUARTER),
+                new CommandUnit(Note.SO, Duration.QUARTER),
+                new CommandUnit(Note.SO, Duration.QUARTER),
                 new CommandUnit(Note.DO, Duration.WHOLE)
-        );
-
-
-
-      /*  List<CommandUnit> katarinaBarbara = Arrays.asList(new CommandUnit(Note.MI, Duration.QUARTER),
-                new CommandUnit(Note.DO, Duration.QUARTER),
-                new CommandUnit(Note.RE, Duration.QUARTER)
         );*/
-        return constructLearnChain(katarinaBarbara);
+
+
+
+
+        return constructLearnChain(readTextNotation(notation));
     }
 
     private BojanState constructLearnChain(List<CommandUnit> commandUnits){
@@ -144,7 +141,7 @@ public class LearnCommander extends Commander{
 
 
         BojanState lastToPlayInPlayChain = lastToPlayInPlayChain(playChain);
-        BojanState messageState = BojanStateFactory.getState(BojanStateType.MESSAGE, circles.get(0), "Now you");
+        BojanState messageState = BojanStateFactory.getState(BojanStateType.MESSAGE, circles.get(0), "Now you try");
         messageState.setNextStates(listenChain);
 
 

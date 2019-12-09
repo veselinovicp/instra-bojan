@@ -1,20 +1,16 @@
 package com.instra.bojan.communication;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.instra.bojan.elements.BojanCircle;
 import com.instra.bojan.state.BojanState;
-import com.instra.bojan.theory.Duration;
-import com.instra.bojan.theory.Note;
 
 
-import java.util.Arrays;
 import java.util.List;
 
 public class PlayCommander extends Commander {
 
 
-    public PlayCommander(List<BojanCircle> circles) {
-        super(circles);
+    public PlayCommander(List<BojanCircle> circles, String notation) {
+        super(circles, notation);
     }
 
     @Override
@@ -33,7 +29,7 @@ public class PlayCommander extends Commander {
         BojanState state5 = BojanStateFactory.getState(BojanStateType.LISTEN, circles.get(1), Note.MI);
         state3.setNextStates(Arrays.asList(state4, state5));*/
 
-        List<CommandUnit> katarinaBarbara = Arrays.asList(new CommandUnit(Note.MI, Duration.QUARTER),
+       /* List<CommandUnit> katarinaBarbara = Arrays.asList(new CommandUnit(Note.MI, Duration.QUARTER),
                 new CommandUnit(Note.DO, Duration.QUARTER),
                 new CommandUnit(Note.MI, Duration.QUARTER),
                 new CommandUnit(Note.DO, Duration.QUARTER),
@@ -41,10 +37,10 @@ public class PlayCommander extends Commander {
                 new CommandUnit(Note.RE, Duration.QUARTER),
                 new CommandUnit(Note.RE, Duration.QUARTER),
                 new CommandUnit(Note.RE, Duration.QUARTER),
-                new CommandUnit(Note.SOL, Duration.QUARTER),
-                new CommandUnit(Note.SOL, Duration.QUARTER),
-                new CommandUnit(Note.SOL, Duration.QUARTER),
-                new CommandUnit(Note.SOL, Duration.QUARTER),
+                new CommandUnit(Note.SO, Duration.QUARTER),
+                new CommandUnit(Note.SO, Duration.QUARTER),
+                new CommandUnit(Note.SO, Duration.QUARTER),
+                new CommandUnit(Note.SO, Duration.QUARTER),
                 new CommandUnit(Note.MI, Duration.QUARTER),
                 new CommandUnit(Note.DO, Duration.QUARTER),
                 new CommandUnit(Note.DO, Duration.HALF),
@@ -56,20 +52,20 @@ public class PlayCommander extends Commander {
                 new CommandUnit(Note.RE, Duration.QUARTER),
                 new CommandUnit(Note.RE, Duration.QUARTER),
                 new CommandUnit(Note.RE, Duration.QUARTER),
-                new CommandUnit(Note.SOL, Duration.QUARTER),
-                new CommandUnit(Note.SOL, Duration.QUARTER),
-                new CommandUnit(Note.SOL, Duration.QUARTER),
-                new CommandUnit(Note.SOL, Duration.QUARTER),
+                new CommandUnit(Note.SO, Duration.QUARTER),
+                new CommandUnit(Note.SO, Duration.QUARTER),
+                new CommandUnit(Note.SO, Duration.QUARTER),
+                new CommandUnit(Note.SO, Duration.QUARTER),
                 new CommandUnit(Note.DO, Duration.WHOLE)
-        );
-
-       /* List<CommandUnit> katarinaBarbara = Arrays.asList(new CommandUnit(Note.MI, Duration.QUARTER)
-
-
         );*/
 
 
-        BojanState playChain = constructPlayChain(katarinaBarbara);
+
+
+        List<CommandUnit> textNotation = readTextNotation(notation);
+
+
+        BojanState playChain = constructPlayChain(textNotation);
         lastToPlayInPlayChain(playChain).setNextStates(constructDefaultStates());
         return playChain;
     }

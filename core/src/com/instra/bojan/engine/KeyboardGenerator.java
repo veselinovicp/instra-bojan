@@ -134,7 +134,7 @@ public abstract class KeyboardGenerator {
                 note = Note.FA;
             }
             if(i%12==7){
-                note = Note.SOL;
+                note = Note.SO;
             }
             if(i%12==9){
                 note = Note.LA;
