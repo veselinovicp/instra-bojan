@@ -12,7 +12,8 @@ public class ExponentialKeyboardGenerator extends KeyboardGenerator {
 
     @Override
     protected float getRadius(float angle) {
-        return (float) Math.pow(Math.E , ((float)(-0.1*angle)));
+        return
+                (float) -Math.pow(Math.E , ((float)(-0.1*angle)));
     }
 
     @Override

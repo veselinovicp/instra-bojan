@@ -3,9 +3,7 @@ package com.instra.bojan;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -152,6 +150,32 @@ public class InstraBojan extends ApplicationAdapter {
 
 
 		stage.addActor(songsDropDown);
+
+		//new
+
+		final SelectBox<Integer> offsetDropDown=new SelectBox<Integer>(skin);
+
+		offsetDropDown.setItems(0, 1, 2,3, -1, -2, -3);
+
+		offsetDropDown.setWidth(100);
+		offsetDropDown.setHeight(50);
+		offsetDropDown.setPosition(600,Gdx.graphics.getHeight()-50);
+
+		offsetDropDown.addListener(new EventListener() {
+			@Override
+			public boolean handle(Event event) {
+				GlobalState.getInstance().setPitchOffset(offsetDropDown.getSelected());
+				return true;
+			}
+		});
+
+
+		stage.addActor(offsetDropDown);
+
+
+
+
+
 
 
 

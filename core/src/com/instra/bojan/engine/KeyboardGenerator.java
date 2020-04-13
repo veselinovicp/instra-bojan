@@ -56,28 +56,6 @@ public abstract class KeyboardGenerator {
 
         texture = new Texture(Gdx.files.internal("circle.png"));
 
-        /*switch(Gdx.app.getType()) {
-
-            case Android:
-                sound = Gdx.audio.newSound(Gdx.files.internal(instrument));
-                break;
-            case Desktop:
-                sound = Gdx.audio.newSound(Gdx.files.internal(instrument));
-                break;
-            case HeadlessDesktop:
-                sound = Gdx.audio.newSound(Gdx.files.internal(instrument));
-                break;
-            case Applet:
-                sound = Gdx.audio.newSound(Gdx.files.internal(instrument));
-                break;
-            case WebGL:
-                sound = Gdx.audio.newSound(Gdx.files.internal(instrument));
-                Gdx.
-                break;
-            case iOS:
-                sound = Gdx.audio.newSound(Gdx.files.internal(instrument));
-                break;
-        }*/
 
         sound = Gdx.audio.newSound(Gdx.files.internal(instrument));
 
@@ -147,15 +125,12 @@ public abstract class KeyboardGenerator {
 
             BojanPosition bojanPosition = getBojanPosition(i, angle);
 
-
-            float pitch = getPitch(i);
-
             Color color = getColor(i);
             Color activeColor = getActiveColor(color);
 
 
 
-            BojanCircle bojanCircle = new BojanCircle(texture, bojanPosition, color, activeColor, sound, pitch, note, skin, stage);
+            BojanCircle bojanCircle = new BojanCircle(texture, bojanPosition, color, activeColor, sound, note, skin, stage, i);
             bojanCircles.add(bojanCircle);
 
 
@@ -170,11 +145,7 @@ public abstract class KeyboardGenerator {
         return bojanCircles;
     }
 
-    private float getPitch(int i){
-//        return 1 + (i/circlesPerOctave)+((i%circlesPerOctave)/(float)circlesPerOctave);
-        return (float)(Math.pow(2, i/(float)circlesPerOctave));
 
-    }
 
     private Color getActiveColor(Color color){
         Color activeColor = new Color(color);

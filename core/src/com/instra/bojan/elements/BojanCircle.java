@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.instra.bojan.GlobalState;
 import com.instra.bojan.state.BojanState;
 import com.instra.bojan.state.BojanStateFactory;
 import com.instra.bojan.state.BojanStateType;
@@ -54,13 +55,18 @@ public class BojanCircle extends Actor {
 
     private Stage stage;
 
-    public BojanCircle(Texture texture, BojanPosition bojanPosition, Color color, Color activeColor, Sound sound, float pitch, Note note, Skin skin, Stage stage) {
+    private int index;
+
+    private GlobalState globalState;
+
+    public BojanCircle(Texture texture, BojanPosition bojanPosition, Color color, Color activeColor, Sound sound, Note note, Skin skin, Stage stage, int index) {
         this.note = note;
         this.bojanPosition = bojanPosition;
         this.color=color;
         this.activeColor=activeColor;
         this.skin = skin;
         this.stage = stage;
+        this.index = index;
 
         width = bojanPosition.getRightX()-bojanPosition.getLeftX();
         height = bojanPosition.getRightY()-bojanPosition.getLeftY();
@@ -73,10 +79,12 @@ public class BojanCircle extends Actor {
         circle = new Circle(bojanPosition.getLeftX()+width/2, bojanPosition.getLeftY()+height/2, width/2);
 
 
-        this.pitch=pitch;
+
         this.texture = texture;
 
         state = BojanStateFactory.getState(BojanStateType.USUAL, this);
+
+        globalState = GlobalState.getInstance();
 //        logger.log(Level.SEVERE,"Created");
 
 
@@ -154,7 +162,8 @@ public class BojanCircle extends Actor {
     }
 
     public float getPitch() {
-        return pitch;
+
+        return (float)(Math.pow(2, (index+globalState.getPitchOffset())/(float)12));
     }
 
     public Circle getNextCircle() {
